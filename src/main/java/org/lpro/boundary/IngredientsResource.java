@@ -44,7 +44,7 @@ public class IngredientsResource {
         return in;
     }
 
-    public void removeIngredient(String ingredientId) {
+    public void delete(String ingredientId) {
         try {
             Ingredients ref = this.em.getReference(Ingredients.class, ingredientId);
             this.em.remove(ref);

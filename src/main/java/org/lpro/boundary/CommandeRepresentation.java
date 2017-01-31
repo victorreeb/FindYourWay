@@ -35,23 +35,41 @@ import org.lpro.entity.Sandwich;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.security.Key;
+import java.util.ListIterator;
+import javax.annotation.Priority;
 import javax.inject.Inject;
+import static javax.ws.rs.HttpMethod.PUT;
 import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Priorities;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.HttpHeaders;
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
+import javax.ws.rs.core.Request;
+import javax.ws.rs.ext.Provider;
+import jdk.nashorn.internal.ir.RuntimeNode;
 import org.lpro.entity.Accreditation;
+import provider.AuthentificationFiltre;
+import provider.Secured;
 
 /**
  *
  * @author remaki
  */
+
 @Stateless //EJB: transactionnel pris en charge, le fait qu'il y ait plusieurs requetes, que les ressources soient vérouillées
 @Path("/commandes")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class CommandeRepresentation {
+    
+    //attribut pour stocker le token
+    
+    String token;
     @Inject
     private KeyManagement keyManagement;
-
+     @Inject
+    private AuthentificationFiltre filtre;
     @Context
     private UriInfo uriInfo;
     
@@ -74,12 +92,12 @@ public class CommandeRepresentation {
             com.addLink(this.getUriForSelfCommande(uriInfo, com),"self");
             com.addLink(this.getUriForSandwich(uriInfo, com),"sandwichs");
             for(Sandwich san : lsan ) {
-                
+                san.calculatePrix();
                 san.getLinks().clear();
                 san.addLink(this.getUriForSelfSandwich(uriInfo,san,com),"self");
             }
             com.setSandwichs(lsan);
-        
+        com.calculateMontant();
         };
         GenericEntity<List<Commande>> list = new GenericEntity<List<Commande>>(liste) {
         };
@@ -87,9 +105,36 @@ public class CommandeRepresentation {
     }
     
     
+     @GET
+     @Path("privee/commandes")
+    public Response getSortedCommandes(@Context UriInfo uriInfo) {
+        
+        //liste des messages
+        List<Commande> liste = this.comResource.findAll();
+        
+        //pour chaque message
+        for(Commande com : liste) {
+            
+            List<Sandwich> lsan = this.SandwichResource.findAll(com.getId());
+            com.getLinks().clear();
+            com.addLink(this.getUriForSelfCommande(uriInfo, com),"self");
+            com.addLink(this.getUriForSandwich(uriInfo, com),"sandwichs");
+            for(Sandwich san : lsan ) {
+                san.calculatePrix();
+                san.getLinks().clear();
+                san.addLink(this.getUriForSelfSandwich(uriInfo,san,com),"self");
+            }
+        com.setSandwichs(lsan);
+        com.calculateMontant();
+        };
+        GenericEntity<List<Commande>> list = new GenericEntity<List<Commande>>(liste) {
+        };
+        return Response.ok(list, MediaType.APPLICATION_JSON).build();
+    }
+    
    @GET
     @Path("/{commandeId}")
-    public Response getCategorie(@PathParam("commandeId") String commandeId, @Context UriInfo uriInfo) {
+    public Response getCommande(@PathParam("commandeId") String commandeId, @Context UriInfo uriInfo) {
         Commande commande = this.comResource.findById(commandeId);
         if (commande != null) {
             
@@ -98,12 +143,13 @@ public class CommandeRepresentation {
             List<Sandwich> lsan = this.SandwichResource.findAll(commandeId);
             
             for(Sandwich san : lsan) {
-                
+                san.calculatePrix();
                 san.getLinks().clear();
                 
                 san.addLink(this.getUriForSelfSandwich(uriInfo, san, commande), "self");
                 
             }
+             commande.calculateMontant();
             commande.setSandwichs(lsan);
             return Response.ok(commande).build();
         } else {
@@ -113,19 +159,56 @@ public class CommandeRepresentation {
         }
     }
     
+   
+    
+    
+     @GET
+    @Path("/{commandeId}/etat")
+    public Response getEtatCommande(@PathParam("commandeId") String commandeId, @Context UriInfo uriInfo) {
+        Commande commande = this.comResource.findById(commandeId);
+        if (commande != null) {
+            
+            commande.getLinks().clear();
+            commande.addLink(this.getUriForSelfCommande(uriInfo, commande),"self");
+            List<Sandwich> lsan = this.SandwichResource.findAll(commandeId);
+            
+            for(Sandwich san : lsan) {
+                
+                san.calculatePrix();
+                
+                san.getLinks().clear();
+               
+                san.addLink(this.getUriForSelfSandwich(uriInfo, san, commande), "self");
+                
+            }
+             commande.calculateMontant();
+             commande.setSandwichs(lsan);
+            
+           
+            return Response.ok(commande).build();
+        } else {
+            
+            //pas besoin de lien 
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+    
+    
+    
+    
    @GET
     @Path("{commandeId}/sandwichs")
     public Response getAllSandwichs(@PathParam("commandeId") String commandeId, @Context UriInfo uriInfo) {
         List<Sandwich> lsan = this.SandwichResource.findAll(commandeId);
         Commande commande = this.comResource.findById(commandeId);
         for(Sandwich san : lsan) {
-                
+                san.calculatePrix();
                 san.getLinks().clear();
                 
                 san.addLink(this.getUriForSandwich(uriInfo, commande),commandeId);
                 
             }
-        
+        commande.calculateMontant();
         GenericEntity<List<Sandwich>> list = new GenericEntity<List<Sandwich>>(lsan) {
         };
         return Response.ok(list, MediaType.APPLICATION_JSON).build();
@@ -140,23 +223,79 @@ public class CommandeRepresentation {
         Sandwich san = this.SandwichResource.findById(sandwichId);
         return Response.ok(san, MediaType.APPLICATION_JSON).build();
     }
-
+     
+     @PUT
+    @Path("{commandeId}/sandwichs/{sandwichId}")
+    public Response updateOneSandwich(@PathParam("commandeId") String commandeId,
+            @Context UriInfo uriInfo,
+            @PathParam("sandwichId") String sandwichId,Sandwich sandwich) {
+        System.out.println("sandwich "+sandwich.getTaille());
+        Commande commande = this.comResource.findById(commandeId);
+        System.out.println("commande à mettre à jour ="+commande);
+       //if( (!commande.getEtat().equals("paid"))&& (!commande.getEtat().equals("delivered"))&& (!commande.getEtat().equals("pending"))&& (!commande.getEtat().equals("ready"))){
+           
+             //commande.setSandwich(sandwichId, sandwich);
+             //Sandwich sand = commande.getSandwich(sandwichId);
+             Sandwich san = this.SandwichResource.findById(sandwichId);
+                   commande= this.comResource.updateCommande(commandeId, commande, sandwichId, san);
+        URI uri = uriInfo.getAbsolutePathBuilder()
+                .path("/")
+                .path(commande.getSandwich(sandwichId).getId())
+                .build();
+        return Response.created(uri).entity(commande.getSandwich(sandwichId)).build();
+        //}else {
+           // return Response.status(Response.Status.UNAUTHORIZED).build();
+        //}
+    }
+    
+    
      @POST
     public Response addCommande(Commande commande, @Context UriInfo uriInfo) {
-        
-       
+              
          
         Commande newCommande = this.comResource.save(commande);
+        newCommande.calculateMontant();
+        this.token = issueToken(newCommande.getId());
+        System.out.println("token =="+this.token);
         URI uri = uriInfo.getAbsolutePathBuilder().path(newCommande.getId())                
                 .build();
         return Response.created(uri)
                 .entity(newCommande).
-                header(AUTHORIZATION,"Bearer "+issueToken(newCommande.getId()))
+                header(AUTHORIZATION,"Bearer "+this.token)
                 .build();
     }
  
     
-    
+    @PUT
+    @Path("/{commandeId}")
+    public Response updateCommande (@PathParam("commandeId") String commandeId,String newDate, @Context UriInfo uriInfo) {
+        
+        Commande commande = this.comResource.findById(commandeId);
+        if (commande != null) {
+            
+            commande.getLinks().clear();
+            commande.addLink(this.getUriForSelfCommande(uriInfo, commande),"self");
+            List<Sandwich> lsan = this.SandwichResource.findAll(commandeId);
+            
+            for(Sandwich san : lsan) {
+                san.calculatePrix();
+                san.getLinks().clear();
+                
+                san.addLink(this.getUriForSelfSandwich(uriInfo, san, commande), "self");
+                
+            }
+             commande.calculateMontant();
+             commande.setDate(newDate);
+            commande.setSandwichs(lsan);
+            return Response.ok(commande).build();
+        } else {
+            
+            //pas besoin de lien 
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        
+        
+    }
     
     
     public Response authentifieCommande(Accreditation accrediation) {
@@ -185,28 +324,48 @@ public class CommandeRepresentation {
         }
     }
     
-    
+    @Secured
     @POST
     @Path("/{commandeId}/sandwichs")
     public Response addSandwich(@PathParam("commandeId") String commandeId,
             Sandwich sandwich,
-            @Context UriInfo uriInfo) {
-        Sandwich san = this.SandwichResource.ajouteSandwich(commandeId, sandwich);
+            @Context UriInfo uriInfo,ContainerRequestContext requestContext)throws Exception {
+        Commande commande = this.comResource.findById(commandeId);
+        String token = this.token;
+        System.out.println("token récupéré   :"+token);
+       // String authHeader
+               // = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+       //  if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+           // throw new NotAuthorizedException("Probleme header autorisation");
+      //  }
+        // On extrait le token, et on vérifie qu'il est valide
+        //String token2 = authHeader.substring("Bearer".length()).trim();
+        if( (!commande.getEtat().equals("paid"))&& (!commande.getEtat().equals("delivered"))&& (!commande.getEtat().equals("pending"))&& (!commande.getEtat().equals("ready"))){
+           
+             Sandwich san = this.SandwichResource.ajouteSandwich(commandeId, sandwich);
         URI uri = uriInfo.getAbsolutePathBuilder()
                 .path("/")
                 .path(san.getId())
                 .build();
         return Response.created(uri).entity(san).build();
+        }else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+       
+        
     }
     
-    
+   @Secured 
    @DELETE
     @Path("/{commandeId}")
     public void deleteCommande(@PathParam("commandeId") String id) {
-        this.comResource.delete(id);
+         Commande commande = this.comResource.findById(id);
+        if(!commande.getEtat().equals("paid")) {
+            this.comResource.delete(id);
+        }
+        
     }
-     
-    
+  
     
     
     

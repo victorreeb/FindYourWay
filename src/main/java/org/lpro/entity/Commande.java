@@ -6,7 +6,9 @@
 package org.lpro.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -38,12 +40,15 @@ public class Commande {
     private String id;
    
     private int nbre;
+    //Date date = new Date();
+
+    //DateFormat shortDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT);
     
     private String date;
     
-    private String etat; //la commande peut être: créée, payée, en cours, prête, livrée
+    private String etat; //la commande peut être: créée (created), payée (paid), en cours (pending), prête (ready), livrée (delivered)
     
-    
+    private double montant;
     
     
      @OneToMany(cascade = CascadeType.ALL, mappedBy = "commande")  // une instance de la classe categorie correspond plusieurs instance de ingredients 
@@ -119,6 +124,55 @@ public class Commande {
 
     public void setSandwichs(List<Sandwich> sandwichs) {
         this.sandwichs = sandwichs;
+    }
+    
+    public Sandwich getSandwich(String sandwichId){
+        List <Sandwich> lsan = this.getSandwichs();
+        Sandwich res=null;
+            for(Sandwich in : lsan) {
+
+               if(in.getId()==sandwichId) {
+
+                  res= in;
+                }
+
+
+
+           }
+        return res;
+    }
+    
+    public void setSandwich(String sandwichId, Sandwich sandwich){
+        List <Sandwich> lsan = this.getSandwichs();
+        Sandwich res=null;
+            for(Sandwich in : lsan) {
+
+                if(in.getId()==sandwichId) {
+
+                   in=sandwich;
+                }
+
+
+
+           }
+            this.setSandwichs(lsan);
+        
+    }
+    
+    public double calculateMontant() {
+        this.montant = 0;
+        List<Sandwich> lsan= this.getSandwichs();
+        this.nbre = lsan.size();
+        for(Sandwich in : lsan) {
+                
+          this.montant+= in.calculatePrix();
+                
+            
+                
+            }
+        
+        
+        return this.montant;
     }
   
     

@@ -57,25 +57,7 @@ public class SandwichRepresentation {
         sandResource.removeSandwich(sandwichId);
     }
     
-    @POST
-      @Path("/{commandeId}/sandwichs")
-    public Response addSandwich(Sandwich sandwich, @QueryParam("commandeId") String commandeId, @Context UriInfo uriInfo) {
-        
-        Commande commande = this.commandeResource.findById(commandeId);
-        if(!commande.getEtat().equals("payed")&& (!commande.getEtat().equals("livred"))) {
-        Sandwich san = this.sandResource
-                .ajouteSandwich(commandeId, new Sandwich(sandwich.getTaille(),sandwich.getType()));
-        URI uri = uriInfo.getBaseUriBuilder()
-                .path(CommandeRepresentation.class)
-                .path(commandeId)
-                .path(SandwichRepresentation.class)
-                .path(san.getId())
-                .build();
-        
-        return Response.created(uri).entity(san).build();
-        }
-        else  return Response.status(Response.Status.UNAUTHORIZED).build();
-    }
+   
 
     
     

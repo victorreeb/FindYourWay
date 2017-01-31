@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Accreditation {
     public Commande commande;
     public Sandwich sandwich;
+     public Accreditation() {
+    }
 
     public Commande getCommande() {
         return commande;

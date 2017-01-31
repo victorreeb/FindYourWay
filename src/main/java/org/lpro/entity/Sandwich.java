@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,11 +44,12 @@ public class Sandwich implements Serializable {
      private String id;    
     private String taille;
     private String type;
+    private double prix;
     @ManyToOne // va se référer à une catégorie qui correspond à mapBy
     @JsonBackReference //cassser le cycle   
     private Commande commande;
 
-     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sandwich")  // une instance de la classe message correspond plusieurs instance de commentaires 
+     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sandwich",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
     //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
     private List<Ingredients> ingredients; //collection
     @XmlElement(name="_links")
@@ -118,6 +120,17 @@ public class Sandwich implements Serializable {
     
     
     
-    
+    public double calculatePrix() {
+        this.prix = 0;
+        switch(this.taille) {
+            
+              case "petite faim":    this.prix= 4;break;
+              case "moyenne faim":   this.prix= 5;break;
+              case "grosse faim":    this.prix= 7;break;
+              case "ogre":           this.prix= 10;break;
+        }
+        
+        return this.prix;
+    }
     
 }

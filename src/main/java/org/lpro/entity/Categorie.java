@@ -19,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -28,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity //elle va persister dans la bdd
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 // toutes les catégories qui appartiennent à la classe categorie
 @NamedQueries({
     @NamedQuery(name = "Categorie.findAll", query = "SELECT c FROM Categorie c")
@@ -42,7 +45,7 @@ public class Categorie implements Serializable {
     private String id;
     private String libelle;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categorie",fetch=FetchType.EAGER )  // une instance de la classe categorie correspond plusieurs instance de ingredients 
+    @OneToMany(mappedBy = "categorie",fetch=FetchType.EAGER )  // une instance de la classe categorie correspond plusieurs instance de ingredients 
     @JsonManagedReference  //le point d'entrée  (pour eviter le cycle)
     private List<Ingredients> ingredients; //collection
     @XmlElement(name="_links")

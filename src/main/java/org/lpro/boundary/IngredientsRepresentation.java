@@ -51,7 +51,7 @@ public class IngredientsRepresentation {
     @DELETE
     @Path("/{ingredientId}")
     public void deleteIngredient(@PathParam("ingredientId") String ingredientId) {
-        ingredientResource.removeIngredient(ingredientId);
+        ingredientResource.delete(ingredientId);
     }
 
     @POST

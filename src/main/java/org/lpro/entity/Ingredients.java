@@ -39,7 +39,17 @@ public class Ingredients implements Serializable {
     @ManyToOne // va se référer à une catégorie qui correspond à mapBy
     //@JsonBackReference //cassser le cycle   
     private Sandwich sandwich;
-    
+
+    public Sandwich getSandwich() {
+        return sandwich;
+    }
+
+    public void setSandwich(Sandwich sandwich) {
+        this.sandwich = sandwich;
+    }
+
+   
+     
      @XmlElement(name="_links")
     @Transient 
     private List<Link>  links = new ArrayList<>();

@@ -19,6 +19,7 @@ import org.lpro.entity.Categorie;
 
 import org.lpro.entity.Commande;
 import org.lpro.entity.Ingredients;
+import org.lpro.entity.Sandwich;
 
 /**
  *
@@ -48,6 +49,22 @@ public class CommandeResource {
         com.setId(UUID.randomUUID().toString());
         com.setSandwichs(new ArrayList<>());
         return this.em.merge(com);
+    }
+    
+    public Commande updateCommande (String id, Commande commande, String sandwichId,Sandwich sandwich) {
+        Commande ref;
+        try {
+             ref = this.em.getReference(Commande.class, id);
+        }
+        catch(EntityNotFoundException e) {
+            
+            
+        }
+        ref = this.em.getReference(Commande.class, id);
+        ref.setSandwich(sandwichId, sandwich);
+        
+        return this.em.merge(ref);
+        
     }
 
     public void delete(String id) {
