@@ -51,19 +51,25 @@ public class CommandeResource {
         return this.em.merge(com);
     }
     
-    public Commande updateCommande (String id, Commande commande, String sandwichId,Sandwich sandwich) {
-        Commande ref;
-        try {
-             ref = this.em.getReference(Commande.class, id);
+    public Sandwich updateCommande (String id, Commande commande, String sandwichId,Sandwich sandwich) {
+        
+        Commande ref = this.em.getReference(Commande.class, id);
+        
+        try {         
+                  
+        
+                ref.setSandwich(sandwichId, sandwich);
+
+                ref = this.em.merge(ref);
+       
         }
         catch(EntityNotFoundException e) {
             
-            
+            e.getMessage();
         }
-        ref = this.em.getReference(Commande.class, id);
-        ref.setSandwich(sandwichId, sandwich);
         
-        return this.em.merge(ref);
+        
+        return ref.getSandwich(sandwichId);
         
     }
 

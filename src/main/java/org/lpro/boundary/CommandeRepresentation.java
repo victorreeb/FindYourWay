@@ -35,6 +35,7 @@ import org.lpro.entity.Sandwich;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.annotation.Priority;
 import javax.inject.Inject;
@@ -49,6 +50,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.ext.Provider;
 import jdk.nashorn.internal.ir.RuntimeNode;
 import org.lpro.entity.Accreditation;
+import org.lpro.entity.Paiement;
 import provider.AuthentificationFiltre;
 import provider.Secured;
 
@@ -78,6 +80,9 @@ public class CommandeRepresentation {
     @EJB
     SandwichResource SandwichResource;
     
+    @EJB
+    PaiementResource PaiementResource;
+    
      @GET
     public Response getCommandes(@Context UriInfo uriInfo) {
         
@@ -88,14 +93,22 @@ public class CommandeRepresentation {
         for(Commande com : liste) {
             
             List<Sandwich> lsan = this.SandwichResource.findAll(com.getId());
+             List<Paiement> lpa = this.PaiementResource.findAll(com.getId());
             com.getLinks().clear();
             com.addLink(this.getUriForSelfCommande(uriInfo, com),"self");
             com.addLink(this.getUriForSandwich(uriInfo, com),"sandwichs");
+            com.addLink(this.getUriForPaiement(uriInfo, com),"paiements");
             for(Sandwich san : lsan ) {
                 san.calculatePrix();
                 san.getLinks().clear();
                 san.addLink(this.getUriForSelfSandwich(uriInfo,san,com),"self");
             }
+            for(Paiement pa : lpa ) {
+                
+                pa.getLinks().clear();
+                pa.addLink(this.getUriForSelfPaiement(uriInfo,pa,com),"self");
+            }
+            com.setPaiements(lpa);
             com.setSandwichs(lsan);
         com.calculateMontant();
         };
@@ -224,35 +237,31 @@ public class CommandeRepresentation {
         return Response.ok(san, MediaType.APPLICATION_JSON).build();
     }
      
-     @PUT
+    @PUT
     @Path("{commandeId}/sandwichs/{sandwichId}")
-    public Response updateOneSandwich(@PathParam("commandeId") String commandeId,
+    public Sandwich updateOneSandwich(@PathParam("commandeId") String commandeId,
             @Context UriInfo uriInfo,
             @PathParam("sandwichId") String sandwichId,Sandwich sandwich) {
-        System.out.println("sandwich "+sandwich.getTaille());
-        Commande commande = this.comResource.findById(commandeId);
-        System.out.println("commande à mettre à jour ="+commande);
-       //if( (!commande.getEtat().equals("paid"))&& (!commande.getEtat().equals("delivered"))&& (!commande.getEtat().equals("pending"))&& (!commande.getEtat().equals("ready"))){
+        
+        Commande commande1 = this.comResource.findById(commandeId);
+        
+       Sandwich san= commande1.getSandwich(sandwichId);
+       if( (!commande1.getEtat().equals("paid"))&& (!commande1.getEtat().equals("delivered"))&& (!commande1.getEtat().equals("pending"))&& (!commande1.getEtat().equals("ready"))){
            
-             //commande.setSandwich(sandwichId, sandwich);
-             //Sandwich sand = commande.getSandwich(sandwichId);
-             Sandwich san = this.SandwichResource.findById(sandwichId);
-                   commande= this.comResource.updateCommande(commandeId, commande, sandwichId, san);
-        URI uri = uriInfo.getAbsolutePathBuilder()
-                .path("/")
-                .path(commande.getSandwich(sandwichId).getId())
-                .build();
-        return Response.created(uri).entity(commande.getSandwich(sandwichId)).build();
-        //}else {
-           // return Response.status(Response.Status.UNAUTHORIZED).build();
-        //}
+           
+          san= this.comResource.updateCommande(commandeId, commande1, sandwichId, sandwich);       
+       
+       }    
+       
+       
+        return  san;
     }
     
     
      @POST
     public Response addCommande(Commande commande, @Context UriInfo uriInfo) {
               
-         
+         commande.setPaiements(new ArrayList<Paiement>());
         Commande newCommande = this.comResource.save(commande);
         newCommande.calculateMontant();
         this.token = issueToken(newCommande.getId());
@@ -286,7 +295,7 @@ public class CommandeRepresentation {
             }
              commande.calculateMontant();
              commande.setDate(newDate);
-            commande.setSandwichs(lsan);
+             commande.setSandwichs(lsan);
             return Response.ok(commande).build();
         } else {
             
@@ -296,6 +305,77 @@ public class CommandeRepresentation {
         
         
     }
+    
+     @POST
+      @Path("/{commandeId}/payCommande")
+    public Response payCommande(@PathParam("commandeId") String commandeId, @Context UriInfo uriInfo,Paiement paiement) {
+        Commande commande = this.comResource.findById(commandeId);
+                   
+           
+             double montant =  commande.calculateMontant();
+               if(montant == paiement.getMontant() && commande != null) {
+                   
+                  //Paiement newPaiement = this.PaiementResource.save(paiement); 
+                   Paiement p = this.PaiementResource
+                .ajoutePaiement(commandeId, new Paiement(paiement.getMail(),paiement.getName(),
+                paiement.getDateExperation(),paiement.getNumber_card(),paiement.getCvv2(),paiement.getType(),paiement.getMontant()));
+        URI uri = uriInfo.getBaseUriBuilder()
+                .path(CommandeRepresentation.class)
+                .path(commandeId)
+                .path(PaiementRepresentation.class)
+                .path(p.getId())
+                .build();
+                commande.setEtat("paid");
+                 return Response.created(uri).entity(p).build();
+                   
+               }     
+            
+        
+          else {
+                   
+                   
+             return Response.status(Response.Status.NOT_FOUND).build();
+        }
+            
+        
+    }
+    
+    
+    
+     @GET
+    @Path("/{commandeId}/content")
+    public Response getContentCommande(@PathParam("commandeId") String commandeId, @Context UriInfo uriInfo) {
+        Commande commande = this.comResource.findById(commandeId);
+        if (commande != null) {
+            
+            commande.getLinks().clear();
+            commande.addLink(this.getUriForSelfCommande(uriInfo, commande),"self");
+            List<Sandwich> lsan = this.SandwichResource.findAll(commandeId);
+            
+            for(Sandwich san : lsan) {
+                
+                san.calculatePrix();
+                
+                san.getLinks().clear();
+               
+                san.addLink(this.getUriForSelfSandwich(uriInfo, san, commande), "self");
+                
+            }
+              
+             commande.calculateMontant();
+             commande.setSandwichs(lsan);
+            
+           
+            return Response.ok(commande).build();
+        } else {
+            
+            //pas besoin de lien 
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+    
+ 
+    
     
     
     public Response authentifieCommande(Accreditation accrediation) {
@@ -376,7 +456,7 @@ public class CommandeRepresentation {
         
         
         String uri = uriInfo.getBaseUriBuilder()
-                .path(CategorieRepresentation.class)
+                .path(CommandeRepresentation.class)
                 .path(commande.getId())
                 .build()
                 .toString();
@@ -396,6 +476,21 @@ public class CommandeRepresentation {
         
     }
     
+    
+    private String getUriForSelfPaiement(UriInfo uriInfo, Paiement pa, Commande commande) {
+        
+        
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(CommandeRepresentation.class)
+                .path(commande.getId())
+                .path(PaiementRepresentation.class)
+                .path(pa.getId())
+                .build()
+                .toString();
+        
+        return uri;
+        
+    }
     // pour un ingredient d'une categorie 
     private String getUriForSelfSandwich(UriInfo uriInfo, Sandwich san, Commande commande) {
         
@@ -421,6 +516,21 @@ public class CommandeRepresentation {
                 .path(CommandeRepresentation.class)
                 .path(commande.getId())
                 .path(SandwichRepresentation.class)
+                .build()
+                .toString();
+        
+        return uri;
+        
+        
+        
+    }
+    
+     private String getUriForPaiement(UriInfo uriInfo, Commande commande) {
+        
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(CommandeRepresentation.class)
+                .path(commande.getId())
+                .path(PaiementRepresentation.class)
                 .build()
                 .toString();
         

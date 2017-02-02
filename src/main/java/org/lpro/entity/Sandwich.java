@@ -22,6 +22,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -32,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity //elle va persister dans la bdd
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 // toutes les catégories qui appartiennent à la classe categorie
 @NamedQueries({
     @NamedQuery(name = "Sandwich.findAll", query = "SELECT s FROM Sandwich s")
