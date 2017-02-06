@@ -34,7 +34,7 @@ public class User implements Serializable {
     private String prenom;
     private String mail;
     private String password;
-    
+    private int type;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")  // une instance de la classe message correspond plusieurs instance de commentaires 
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
@@ -100,6 +100,14 @@ public class User implements Serializable {
 
     public void setParties(List<Partie> parties) {
         this.parties = parties;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
    
     
