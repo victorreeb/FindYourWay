@@ -41,6 +41,7 @@ public class PointResource {
         return liste;
     }
 
+
     
     public List<Point> findAdminAll(){
         
@@ -55,6 +56,16 @@ public class PointResource {
         p.setId(UUID.randomUUID().toString());        
         return this.em.merge(p);
     }
+
+    public Point ajoutePoint(String partieId, Point point) {
+        Point p = new Point(point.getLat(),point.getLng());
+        p.setId(UUID.randomUUID().toString());
+        p.setPartie(this.em.find(Partie.class, partieId));
+        this.em.persist(p);
+        return p;
+    }
+
+
     public void removePoint(String pointId) {
         try {
             Point ref = this.em.getReference(Point.class, pointId);
@@ -62,6 +73,7 @@ public class PointResource {
         } catch (EntityNotFoundException e) {
             // on veut supprimer, et elle n'existe pas, donc c'est bon
         }
+
 
     
         
@@ -75,10 +87,10 @@ public class PointResource {
     } 
 
     
-}
-    
 
     
+
+
     
     
     
