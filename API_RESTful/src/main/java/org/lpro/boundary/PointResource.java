@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.UUID;
 import javax.ejb.Stateless;
 
-
-
 import javax.persistence.CacheStoreMode;
 
 import javax.persistence.EntityManager;
@@ -42,6 +40,7 @@ public class PointResource {
         List<Point> liste = query.getResultList();
         return liste;
     }
+
     
    
 
@@ -55,20 +54,23 @@ public class PointResource {
         return q.getResultList();
     }
 
+
     public Point ajoutePoint(Point point) {
         Point p = new Point(point.getLat(),point.getLng(),point.getAppellation());
         p.setId(UUID.randomUUID().toString());        
         return this.em.merge(p);
     }
 
+
     public Point ajoutePoint(String partieId, Point point) {
         Point p = new Point(point.getLat(),point.getLng());
         p.setId(UUID.randomUUID().toString());
         p.setPartie(this.em.find(Partie.class, partieId));
         this.em.persist(p);
-        return p;
-        
+
+      return p;
     }
+ 
     public Partie save(Partie partie) {
         partie.setId(UUID.randomUUID().toString());
         partie.setPoints(partie.getPoints());
@@ -76,7 +78,6 @@ public class PointResource {
         
         return this.em.merge(partie);
 
-    }
 
 
     public void removePoint(String pointId) {
@@ -87,7 +88,7 @@ public class PointResource {
             // on veut supprimer, et elle n'existe pas, donc c'est bon
         }
 
-        
+
         
     }
 
@@ -96,6 +97,12 @@ public class PointResource {
         
       return this.em.merge(point);
     } 
+
+
+    }
+
+    
+    
 
 
     

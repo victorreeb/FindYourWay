@@ -6,11 +6,24 @@
 package org.lpro.entity;
 
 import java.io.Serializable;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+=======
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+>>>>>>> ajout d'autres resources
+>>>>>>> ajout d'autres resources
 
 import javax.persistence.Id;
 <<<<<<< HEAD
@@ -147,6 +160,7 @@ import org.hibernate.annotations.GenericGenerator;
  * @author remaki
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 @Entity  //pour dire qu'on ça va persister dans une table dans une base de données
 @XmlRootElement
@@ -157,6 +171,9 @@ import org.hibernate.annotations.GenericGenerator;
 })
 
 =======
+=======
+
+>>>>>>> ajout d'autres resources
 @Entity  //pour dire qu'on ça va persister dans une table dans une base de données
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -167,12 +184,17 @@ import org.hibernate.annotations.GenericGenerator;
     @NamedQuery(name="Destination.findAdminAll",query="SELECT d from Destination d"),
     
 })
+<<<<<<< HEAD
 >>>>>>> ajout de destination/Admin
+=======
+
+>>>>>>> ajout d'autres resources
 public class Destination implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
@@ -181,6 +203,12 @@ public class Destination implements Serializable {
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
 >>>>>>> ajout création partie: méthode POST
+=======
+
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+
+>>>>>>> ajout d'autres resources
     private String id;
     private String lat;
     private String lng;
@@ -196,15 +224,22 @@ public class Destination implements Serializable {
    //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
 
     
+<<<<<<< HEAD
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
     //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
     
 <<<<<<< HEAD
+=======
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+    private ArrayList<String> indices; //collection
+>>>>>>> ajout d'autres resources
     
     
    @OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
    private Partie partie;
 
+<<<<<<< HEAD
 =======
     @OneToMany( cascade = CascadeType.ALL,mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
@@ -214,6 +249,8 @@ public class Destination implements Serializable {
    //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
   // private Partie partie;
 >>>>>>> ajout création partie: méthode POST
+=======
+>>>>>>> ajout d'autres resources
     @XmlElement(name="_links")
     @Transient 
     private List<Link>  links = new ArrayList<>();
@@ -225,26 +262,38 @@ public class Destination implements Serializable {
     
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     public Destination(String lat,String lng, String description,String lieu,ArrayList<String> indices){
 
 =======
     public Destination(String lat,String lng, String description,String lieu,List<Indice> indices){
 >>>>>>> ajout création partie: méthode POST
+=======
+
+    public Destination(String lat,String lng, String description,String lieu,ArrayList<String> indices){
+
+>>>>>>> ajout d'autres resources
         
         this.lat = lat;
         this.lng = lng;
         this.description = description;
         this.lieu = lieu;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ajout d'autres resources
 
         this.indices = indices;
 
         
 
+<<<<<<< HEAD
 =======
         this.indices = indices;
 >>>>>>> ajout création partie: méthode POST
+=======
+>>>>>>> ajout d'autres resources
         
     }
     
@@ -321,6 +370,12 @@ public class Destination implements Serializable {
 <<<<<<< HEAD
     
     
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> ajout d'autres resources
+=======
+>>>>>>> ajout d'autres resources
 
 
     public Partie getPartie() {
@@ -330,10 +385,17 @@ public class Destination implements Serializable {
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
+<<<<<<< HEAD
 =======
 >>>>>>> ajout création partie: méthode POST
     
 
 
 
+=======
+    
+
+
+>>>>>>> ajout d'autres resources
+>>>>>>> ajout d'autres resources
 }
