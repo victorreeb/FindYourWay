@@ -48,6 +48,31 @@ public class Destination implements Serializable {
     @Transient 
     private List<Link>  links = new ArrayList<>();
     
+    
+    public Destination(){
+        
+    }
+    
+    
+    public Destination(String lat,String lng, String description,String lieu){
+        
+        this.lat = lat;
+        this.lng = lng;
+        this.description = description;
+        this.lieu = lieu;
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public List<Link> getLinks() {
         
         return links;
@@ -105,6 +130,14 @@ public class Destination implements Serializable {
 
     public void setIndices(List<Indice> indices) {
         this.indices = indices;
+    }
+
+    public Partie getPartie() {
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
     }
     
     

@@ -39,6 +39,21 @@ public class Point implements Serializable {
     @Transient 
     private List<Link>  links = new ArrayList<>();
     
+     public Point() {
+    }
+
+    public Point(String lat, String lng) {
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    public Point(String lat, String lng,Partie partie) {
+          this.lat = lat;
+          this.lng = lng;
+          this.partie = partie;
+    }
+        
+    
     public List<Link> getLinks() {
         
         return links;
@@ -80,6 +95,14 @@ public class Point implements Serializable {
 
     public void setAppellation(String appellation) {
         this.appellation = appellation;
+    }
+
+    public Partie getPartie() {
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
     }
     
     
