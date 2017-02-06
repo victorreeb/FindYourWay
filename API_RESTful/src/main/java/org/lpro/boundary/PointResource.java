@@ -8,7 +8,9 @@ package org.lpro.boundary;
 import java.util.List;
 import java.util.UUID;
 import javax.ejb.Stateless;
+
 import javax.persistence.CacheStoreMode;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
@@ -38,6 +40,7 @@ public class PointResource {
         List<Point> liste = query.getResultList();
         return liste;
     }
+
     
     public List<Point> findAdminAll(){
         
@@ -50,10 +53,8 @@ public class PointResource {
     public Point ajoutePoint(Point point) {
         Point p = new Point(point.getLat(),point.getLng(),point.getAppellation());
         p.setId(UUID.randomUUID().toString());        
-        this.em.merge(p);
-        return p;
+        return this.em.merge(p);
     }
-
     public void removePoint(String pointId) {
         try {
             Point ref = this.em.getReference(Point.class, pointId);
@@ -61,6 +62,7 @@ public class PointResource {
         } catch (EntityNotFoundException e) {
             // on veut supprimer, et elle n'existe pas, donc c'est bon
         }
+
     
         
         
@@ -71,6 +73,12 @@ public class PointResource {
         
       return this.em.merge(point);
     } 
+
+    }
+
+    
+    
+
     
     
     

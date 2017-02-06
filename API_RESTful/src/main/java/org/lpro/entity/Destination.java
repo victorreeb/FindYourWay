@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -30,6 +31,7 @@ import org.hibernate.annotations.GenericGenerator;
  *
  * @author remaki
  */
+
 @Entity  //pour dire qu'on ça va persister dans une table dans une base de données
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,17 +39,21 @@ import org.hibernate.annotations.GenericGenerator;
     @NamedQuery(name="Destination.findAdminAll",query="SELECT d from Destination d"),
     
 })
+
 public class Destination implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
+
     private String id;
     private String lat;
     private String lng;
     private String description;
     private String lieu;
+
     private ArrayList<String> indices = new ArrayList<>();
     //@OneToMany(mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
     //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
@@ -55,7 +61,16 @@ public class Destination implements Serializable {
     
     
    //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
-  // private Partie partie;
+
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+    private ArrayList<String> indices; //collection
+    
+    
+   @OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
+   private Partie partie;
+
     @XmlElement(name="_links")
     @Transient 
     private List<Link>  links = new ArrayList<>();
@@ -66,13 +81,19 @@ public class Destination implements Serializable {
     }
     
     
+
     public Destination(String lat,String lng, String description,String lieu,ArrayList<String> indices){
+
         
         this.lat = lat;
         this.lng = lng;
         this.description = description;
         this.lieu = lieu;
+
         this.indices = indices;
+
+        
+
         
     }
     
@@ -136,6 +157,7 @@ public class Destination implements Serializable {
         this.lieu = lieu;
     }
 
+
     public ArrayList<String> getIndices() {
         return indices;
     }
@@ -147,4 +169,16 @@ public class Destination implements Serializable {
     
     
     
+
+
+    public Partie getPartie() {
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
+    }
+    
+
+
 }

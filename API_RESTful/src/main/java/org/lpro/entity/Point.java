@@ -9,12 +9,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
@@ -59,8 +58,8 @@ public class Point implements Serializable {
           this.lat = lat;
           this.lng = lng;
           this.appellation = appellation;
+
     }
-        
     
     public List<Link> getLinks() {
         
@@ -73,9 +72,11 @@ public class Point implements Serializable {
         this.links.add(new Link(rel, uri));
     }
 
+
     public String getId() {
         return id;
     }
+
 
     public void setId(String id) {
         this.id = id;
@@ -101,20 +102,22 @@ public class Point implements Serializable {
         return appellation;
     }
 
+	
+	 
+	
+
     public void setAppellation(String appellation) {
         this.appellation = appellation;
     }
-/*
-    public Partie getPartie() {
-        return partie;
-    }
 
-    public void setPartie(Partie partie) {
-        this.partie = partie;
-    }
-    
-    */
     
     
     
+
+    
+    
+    
+    
+
+
 }
