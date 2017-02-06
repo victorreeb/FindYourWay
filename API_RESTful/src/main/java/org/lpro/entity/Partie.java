@@ -18,16 +18,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author remaki
  */
-@Entity
+@Entity //elle va persister dans la bdd
+@XmlRootElement
+// tous les messages qui appartiennent à la classe message
+@NamedQueries({
+    @NamedQuery(name = "Partie.findAll", query = "SELECT p FROM Partie p")
+})
 public class Partie implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -65,6 +73,20 @@ public class Partie implements Serializable {
         
         this.links.add(new Link(rel, uri));
     }
+    
+    
+     public Partie() { //tjrs un constructeur vide pour JPA
+        this.points = new ArrayList<>();
+    }
+
+    public Partie(String id, String nom, String description,Destination destination) {
+        this.id = id; 
+        this.nom = nom;
+        this.description = description;
+        this.points = new ArrayList<>();
+        this.destination = destination;
+    }
+    
     public String getId() {
         return id;
     }
@@ -87,6 +109,30 @@ public class Partie implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Point> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<Point> points) {
+        this.points = points;
+    }
+
+    public Destination getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Destination destination) {
+        this.destination = destination;
     }
     
     
