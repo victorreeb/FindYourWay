@@ -1,63 +1,59 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.lpro.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
-public class Indice implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
+/**
+ *
+ * @author remaki
+ */
+@Entity
+public class Indice implements Serializable {
 
-	@Id
-	private String id;
-	private String id_destination;
-	private String text;
-	
-	public Indice(){}
-	
-	public Indice(String text){
-		this.text = text;
-	}
+   private static final long serialVersionUID = 1L;
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
+    @Id  //la clé
+    private String id;
+    private String text;
+    
+     @ManyToOne // va se référer à u message  qui correspond à mapBy
+    @JsonBackReference //cassser le cycle   
+    private Destination destination;
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	/**
-	 * @return the id_destination
-	 */
-	public String getId_destination() {
-		return id_destination;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 * @param id_destination the id_destination to set
-	 */
-	public void setId_destination(String id_destination) {
-		this.id_destination = id_destination;
-	}
+    public String getText() {
+        return text;
+    }
 
-	/**
-	 * @return the text
-	 */
-	public String getText() {
-		return text;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
-	/**
-	 * @param text the text to set
-	 */
-	public void setText(String text) {
-		this.text = text;
-	}
-	
+    public Destination getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Destination destination) {
+        this.destination = destination;
+    }
+     
+     
+    
 }

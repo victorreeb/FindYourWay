@@ -1,113 +1,111 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.lpro.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
 
-public class Destination implements Serializable{
+/**
+ *
+ * @author remaki
+ */
+@Entity
+public class Destination implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	private String id;
-	
-	private String id_partie;
-	private int latitude;
-	private int longitude;
-	private String description;
-	private String lieu;
-	
-	public Destination(){}
-	
-	public Destination(int lat, int longi, String desc, String lieu){
-		this.latitude = lat;
-		this.longitude = longi;
-		this.description = desc;
-		this.lieu = lieu;
-	}
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
+    @Id //clé
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String id;
+    private String lat;
+    private String lng;
+    private String description;
+    private String lieu;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+    private List<Indice> indices; //collection
+    
+    
+   @OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
+   private Partie partie;
+    @XmlElement(name="_links")
+    @Transient 
+    private List<Link>  links = new ArrayList<>();
+    
+    public List<Link> getLinks() {
+        
+        return links;
+    }
+    
+    
+    public void addLink(String uri, String rel) {
+        
+        this.links.add(new Link(rel, uri));
+    }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	/**
-	 * @return the id_partie
-	 */
-	public String getId_partie() {
-		return id_partie;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 * @param id_partie the id_partie to set
-	 */
-	public void setId_partie(String id_partie) {
-		this.id_partie = id_partie;
-	}
+    public String getLat() {
+        return lat;
+    }
 
-	/**
-	 * @return the latitude
-	 */
-	public int getLatitude() {
-		return latitude;
-	}
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
 
-	/**
-	 * @param latitude the latitude to set
-	 */
-	public void setLatitude(int latitude) {
-		this.latitude = latitude;
-	}
+    public String getLng() {
+        return lng;
+    }
 
-	/**
-	 * @return the longitude
-	 */
-	public int getLongitude() {
-		return longitude;
-	}
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
 
-	/**
-	 * @param longitude the longitude to set
-	 */
-	public void setLongitude(int longitude) {
-		this.longitude = longitude;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getLieu() {
+        return lieu;
+    }
 
-	/**
-	 * @return the lieu
-	 */
-	public String getLieu() {
-		return lieu;
-	}
+    public void setLieu(String lieu) {
+        this.lieu = lieu;
+    }
 
-	/**
-	 * @param lieu the lieu to set
-	 */
-	public void setLieu(String lieu) {
-		this.lieu = lieu;
-	}
-	
+    public List<Indice> getIndices() {
+        return indices;
+    }
+
+    public void setIndices(List<Indice> indices) {
+        this.indices = indices;
+    }
+    
+    
 }

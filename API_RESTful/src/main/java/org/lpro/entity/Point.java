@@ -1,83 +1,89 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.lpro.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
 
-public class Point implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	private String id;
-	
-	private int latitude;
-	private int longitude;
-	private String appellation;
-	
-	public Point(){}
-	
-	public Point(int lat, int longi, String appellation){
-		this.latitude = lat;
-		this.longitude = longi;
-		this.appellation = appellation;
-	}
+/**
+ *
+ * @author remaki
+ */
+@Entity
+public class Point implements Serializable {
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String id;
+   
+    private String lat;
+    private String lng;
+    private String appellation;
+     @ManyToOne // va se référer à u message  qui correspond à mapBy
+    @JsonBackReference //cassser le cycle   
+    private Partie partie;
+    @XmlElement(name="_links")
+    @Transient 
+    private List<Link>  links = new ArrayList<>();
+    
+    public List<Link> getLinks() {
+        
+        return links;
+    }
+    
+    
+    public void addLink(String uri, String rel) {
+        
+        this.links.add(new Link(rel, uri));
+    }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	/**
-	 * @return the latitude
-	 */
-	public int getLatitude() {
-		return latitude;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 * @param latitude the latitude to set
-	 */
-	public void setLatitude(int latitude) {
-		this.latitude = latitude;
-	}
+    public String getLat() {
+        return lat;
+    }
 
-	/**
-	 * @return the longitude
-	 */
-	public int getLongitude() {
-		return longitude;
-	}
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
 
-	/**
-	 * @param longitude the longitude to set
-	 */
-	public void setLongitude(int longitude) {
-		this.longitude = longitude;
-	}
+    public String getLng() {
+        return lng;
+    }
 
-	/**
-	 * @return the appellation
-	 */
-	public String getAppellation() {
-		return appellation;
-	}
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
 
-	/**
-	 * @param appellation the appellation to set
-	 */
-	public void setAppellation(String appellation) {
-		this.appellation = appellation;
-	}
+    public String getAppellation() {
+        return appellation;
+    }
 
-	
+    public void setAppellation(String appellation) {
+        this.appellation = appellation;
+    }
+    
+    
+    
+    
+    
 }

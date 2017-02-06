@@ -1,65 +1,114 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.lpro.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
 
-public class User implements Serializable{
+/**
+ *
+ * @author remaki
+ */
+@Entity
+public class User implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	private String id;
-	private String name;
-	private String email;
-	//1 or 0, 1 for admin
-	private int type;
-	private String password;
-	
-	public User(){}
-	
-	public User(String name, String email, String password){
-		this.type = 0;
-		if(name != null){
-			this.name = name;	
-		}
-		if(email != null){
-			this.email = email;			
-		}
-		if(password != null){
-			this.password = password;
-		}
-	}
+     private static final long serialVersionUID = 1L;
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
+    @Id  //la clé
+    private String id;
+    
+    private String nom;
+    private String prenom;
+    private String mail;
+    private String password;
+    private int type;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+    private List<Partie> parties; //collection
+    @XmlElement(name="_links")
+    @Transient 
+    private List<Link>  links = new ArrayList<>();
+    
+    public List<Link> getLinks() {
+        
+        return links;
+    }
+    
+    
+    public void addLink(String uri, String rel) {
+        
+        this.links.add(new Link(rel, uri));
+    }
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    public String getId() {
+        return id;
+    }
 
-	/**
-	 * @return the email
-	 */
-	public String getEmail() {
-		return email;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 * @return the type
-	 */
-	public int getType() {
-		return type;
-	}
-		
-	
-	
-	
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Partie> getParties() {
+        return parties;
+    }
+
+    public void setParties(List<Partie> parties) {
+        this.parties = parties;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+   
+    
 }
