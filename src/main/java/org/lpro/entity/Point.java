@@ -5,11 +5,17 @@
  */
 package org.lpro.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
@@ -21,39 +27,63 @@ public class Point implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
+   
+    private String lat;
+    private String lng;
+    private String appellation;
+     @ManyToOne // va se référer à u message  qui correspond à mapBy
+    @JsonBackReference //cassser le cycle   
+    private Partie partie;
+    @XmlElement(name="_links")
+    @Transient 
+    private List<Link>  links = new ArrayList<>();
+    
+    public List<Link> getLinks() {
+        
+        return links;
+    }
+    
+    
+    public void addLink(String uri, String rel) {
+        
+        this.links.add(new Link(rel, uri));
+    }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public String getLat() {
+        return lat;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Point)) {
-            return false;
-        }
-        Point other = (Point) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
-    @Override
-    public String toString() {
-        return "org.lpro.entity.Point[ id=" + id + " ]";
+    public String getLng() {
+        return lng;
     }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getAppellation() {
+        return appellation;
+    }
+
+    public void setAppellation(String appellation) {
+        this.appellation = appellation;
+    }
+    
+    
+    
+    
     
 }

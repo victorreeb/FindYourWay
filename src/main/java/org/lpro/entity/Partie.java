@@ -6,14 +6,20 @@
 package org.lpro.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -37,7 +43,13 @@ public class Partie implements Serializable {
     @ManyToOne // va se référer à u message  qui correspond à mapBy
     @JsonBackReference //cassser le cycle   
     private User user;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partie")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+    private List<Point> points; //collection
     
+   @OneToOne(fetch=FetchType.LAZY)
+   @JoinColumn(name="id")
+   private Destination destination;
     
      @XmlElement(name="_links")
     @Transient 
