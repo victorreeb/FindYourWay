@@ -27,11 +27,7 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> ajout création partie: méthode POST
+
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -47,10 +43,6 @@ import org.hibernate.annotations.GenericGenerator;
     @NamedQuery(name = "Partie.findAll", query = "SELECT p FROM Partie p")
 })
 public class Partie implements Serializable {
-<<<<<<< HEAD
-=======
->>>>>>> ajout création partie: méthode POST
->>>>>>> ajout création partie: méthode POST
 
     private static final long serialVersionUID = 1L;
 
@@ -69,13 +61,7 @@ public class Partie implements Serializable {
     private Utilisateur user;
     @ManyToMany( mappedBy = "parties")  // une instance de la classe message correspond plusieurs instance de commentaires 
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-<<<<<<< HEAD
-   //collection
-    private List<Point> points; 
-=======
-    private List<Point> points; //collection
-    
->>>>>>> ajout création partie: méthode POST
+
    @OneToOne(cascade=CascadeType.ALL)
   
    private Destination destination;
