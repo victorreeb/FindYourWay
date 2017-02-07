@@ -53,8 +53,8 @@ public class PartieRepresentation {
     
      @Context
     private UriInfo uriInfo;
-    // création d'une partie : refaire pour le client POST (X,Y) 
-    /* 
+
+   
     @POST
     public Response addPartie(Partie partie, @Context UriInfo uriInfo) {
         Partie newPartie = this.partResource.save(partie);
@@ -68,7 +68,6 @@ public class PartieRepresentation {
                 .build();
     }
     
-    */
     
     
     
@@ -86,6 +85,8 @@ public class PartieRepresentation {
     
     
     
+    
+
     private String issueToken(String commandeId) {
         Key key = keyManagement.generateKey();
         String jwtToken = Jwts.builder()

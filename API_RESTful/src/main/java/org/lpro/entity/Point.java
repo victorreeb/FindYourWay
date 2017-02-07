@@ -25,6 +25,7 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.GenericGenerator;
 
+
 /**
  *
  * @author remaki
@@ -35,6 +36,7 @@ import org.hibernate.annotations.GenericGenerator;
     @NamedQuery(name="Point.findAdminAll",query="SELECT p from Point p")
 })
 public class Point implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
     @Id @GeneratedValue(generator="system-uuid")

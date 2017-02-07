@@ -40,6 +40,7 @@ public class DestinationResource {
         List<Destination> liste = query.getResultList();
         return liste;
     }
+
     
     
      public List<Destination> findAdminAll(){
@@ -57,6 +58,15 @@ public class DestinationResource {
         
         this.em.merge(des);
         return des;
+
+
+    public Destination ajouteDestination(String partieId, Destination destination) {
+        Destination d = new Destination(destination.getLat(),destination.getLng(),destination.getLieu(),destination.getDescription(),destination.getIndices());
+        d.setId(UUID.randomUUID().toString());
+        //d.setPartie(this.em.find(Partie.class, partieId));
+        this.em.persist(d);
+        return d;
+
     }
 
     public void removeDestination(String destinationId) {

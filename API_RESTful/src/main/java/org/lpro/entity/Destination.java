@@ -28,6 +28,7 @@ import org.hibernate.annotations.GenericGenerator;
  *
  * @author remaki
  */
+<<<<<<< HEAD
 
 @Entity  //pour dire qu'on ça va persister dans une table dans une base de données
 @XmlRootElement
@@ -37,14 +38,24 @@ import org.hibernate.annotations.GenericGenerator;
     
 })
 
+=======
+@Entity  //pour dire qu'on ça va persister dans une table dans une base de données
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+>>>>>>> ajout création partie: méthode POST
 public class Destination implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+<<<<<<< HEAD
 
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
 
+=======
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+>>>>>>> ajout création partie: méthode POST
     private String id;
     private String lat;
     private String lng;
@@ -63,11 +74,21 @@ public class Destination implements Serializable {
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
     //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
     
+<<<<<<< HEAD
     
     
    @OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
    private Partie partie;
 
+=======
+    @OneToMany( cascade = CascadeType.ALL,mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+    private List<Indice> indices; //collection
+    
+    
+   //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
+  // private Partie partie;
+>>>>>>> ajout création partie: méthode POST
     @XmlElement(name="_links")
     @Transient 
     private List<Link>  links = new ArrayList<>();
@@ -78,19 +99,27 @@ public class Destination implements Serializable {
     }
     
     
+<<<<<<< HEAD
 
     public Destination(String lat,String lng, String description,String lieu,ArrayList<String> indices){
 
+=======
+    public Destination(String lat,String lng, String description,String lieu,List<Indice> indices){
+>>>>>>> ajout création partie: méthode POST
         
         this.lat = lat;
         this.lng = lng;
         this.description = description;
         this.lieu = lieu;
+<<<<<<< HEAD
 
         this.indices = indices;
 
         
 
+=======
+        this.indices = indices;
+>>>>>>> ajout création partie: méthode POST
         
     }
     
@@ -164,6 +193,7 @@ public class Destination implements Serializable {
     }
 
     
+<<<<<<< HEAD
     
     
 
@@ -175,6 +205,8 @@ public class Destination implements Serializable {
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
+=======
+>>>>>>> ajout création partie: méthode POST
     
 
 

@@ -42,6 +42,7 @@ public class PointResource {
     }
 
 
+<<<<<<< HEAD
     
     public List<Point> findAdminAll(){
         
@@ -57,12 +58,23 @@ public class PointResource {
         return this.em.merge(p);
     }
 
+=======
+>>>>>>> ajout création partie: méthode POST
     public Point ajoutePoint(String partieId, Point point) {
         Point p = new Point(point.getLat(),point.getLng());
         p.setId(UUID.randomUUID().toString());
         p.setPartie(this.em.find(Partie.class, partieId));
         this.em.persist(p);
         return p;
+        
+    }
+    public Partie save(Partie partie) {
+        partie.setId(UUID.randomUUID().toString());
+        partie.setPoints(partie.getPoints());
+        partie.setDestination(partie.getDestination());
+        
+        return this.em.merge(partie);
+
     }
 
 
