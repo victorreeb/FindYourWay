@@ -50,7 +50,7 @@ public class Partie implements Serializable {
     
     @ManyToOne // va se référer à u message  qui correspond à mapBy
     @JsonBackReference //cassser le cycle   
-    private User user;
+    private Utilisateur user;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partie")  // une instance de la classe message correspond plusieurs instance de commentaires 
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
     private List<Point> points; //collection
@@ -111,11 +111,11 @@ public class Partie implements Serializable {
         this.description = description;
     }
 
-    public User getUser() {
+    public Utilisateur getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Utilisateur user) {
         this.user = user;
     }
 
