@@ -5,11 +5,9 @@
  */
 package org.lpro.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -62,9 +59,9 @@ public class Destination implements Serializable {
    //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
 
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
-    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-    private List<Indice> indices; //collection
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+    
     
     
    @OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
@@ -157,7 +154,7 @@ public class Destination implements Serializable {
     }
 
 
-    public List<Indice> getIndices() {
+    public ArrayList<String> getIndices() {
         return indices;
     }
 
