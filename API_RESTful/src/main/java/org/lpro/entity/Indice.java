@@ -7,11 +7,16 @@ package org.lpro.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -19,6 +24,8 @@ import org.hibernate.annotations.GenericGenerator;
  * @author remaki
  */
 @Entity
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Indice implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -28,9 +35,9 @@ public class Indice implements Serializable {
     private String id;
     private String text;
     
-     @ManyToOne // va se référer à u message  qui correspond à mapBy
-    @JsonBackReference //cassser le cycle   
-    private Destination destination;
+   // @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.EAGER) // va se référer à u message  qui correspond à mapBy
+   // @JsonBackReference //cassser le cycle   
+    //private Destination destination;
     
      public Indice(){
          
@@ -56,14 +63,14 @@ public class Indice implements Serializable {
     public void setText(String text) {
         this.text = text;
     }
-
+/*
     public Destination getDestination() {
         return destination;
     }
 
     public void setDestination(Destination destination) {
         this.destination = destination;
-    }
+    }*/
      
      
     

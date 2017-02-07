@@ -1,7 +1,7 @@
 package org.lpro.entity;
 
+import java.util.ArrayList;
 import javax.annotation.Generated;
-import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
@@ -9,7 +9,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Destination.class)
 public abstract class Destination_ {
 
-	public static volatile ListAttribute<Destination, Indice> indices;
+	public static volatile SingularAttribute<Destination, ArrayList> indices;
 	public static volatile SingularAttribute<Destination, String> lng;
 	public static volatile SingularAttribute<Destination, String> description;
 	public static volatile SingularAttribute<Destination, String> id;

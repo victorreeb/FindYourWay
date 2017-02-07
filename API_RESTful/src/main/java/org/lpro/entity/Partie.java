@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -57,10 +58,10 @@ public class Partie implements Serializable {
     @ManyToOne // va se référer à u message  qui correspond à mapBy
     @JsonBackReference //cassser le cycle   
     private Utilisateur user;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partie")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @ManyToMany( mappedBy = "parties")  // une instance de la classe message correspond plusieurs instance de commentaires 
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-    private List<Point> points; //collection
-    
+   //collection
+    private List<Point> points; 
    @OneToOne(cascade=CascadeType.ALL)
   
    private Destination destination;

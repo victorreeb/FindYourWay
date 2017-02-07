@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
@@ -33,9 +34,9 @@ public class Point implements Serializable {
     private String lat;
     private String lng;
     private String appellation;
-     @ManyToOne // va se référer à u message  qui correspond à mapBy
+     @ManyToMany // va se référer à u message  qui correspond à mapBy
     @JsonBackReference //cassser le cycle   
-    private Partie partie;
+    private List<Partie> parties;
     @XmlElement(name="_links")
     @Transient 
     private List<Link>  links = new ArrayList<>();
@@ -48,10 +49,10 @@ public class Point implements Serializable {
         this.lng = lng;
     }
 
-    public Point(String lat, String lng,Partie partie) {
+    public Point(String lat, String lng,String appellation) {
           this.lat = lat;
           this.lng = lng;
-          this.partie = partie;
+          this.appellation = appellation;
     }
         
     
@@ -97,7 +98,7 @@ public class Point implements Serializable {
     public void setAppellation(String appellation) {
         this.appellation = appellation;
     }
-
+/*
     public Partie getPartie() {
         return partie;
     }
@@ -106,7 +107,7 @@ public class Point implements Serializable {
         this.partie = partie;
     }
     
-    
+    */
     
     
     

@@ -42,10 +42,10 @@ public class Destination implements Serializable {
     private String lng;
     private String description;
     private String lieu;
-    
-    @OneToMany( cascade = CascadeType.ALL,mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
-    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-    private List<Indice> indices; //collection
+    private ArrayList<String> indices = new ArrayList<>();
+    //@OneToMany(mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
+    //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+     //collection
     
     
    //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
@@ -60,7 +60,7 @@ public class Destination implements Serializable {
     }
     
     
-    public Destination(String lat,String lng, String description,String lieu,List<Indice> indices){
+    public Destination(String lat,String lng, String description,String lieu,ArrayList<String> indices){
         
         this.lat = lat;
         this.lng = lng;
@@ -130,11 +130,11 @@ public class Destination implements Serializable {
         this.lieu = lieu;
     }
 
-    public List<Indice> getIndices() {
+    public ArrayList<String> getIndices() {
         return indices;
     }
 
-    public void setIndices(List<Indice> indices) {
+    public void setIndices(ArrayList<String> indices) {
         this.indices = indices;
     }
 

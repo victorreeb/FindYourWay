@@ -8,7 +8,6 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Indice.class)
 public abstract class Indice_ {
 
-	public static volatile SingularAttribute<Indice, Destination> destination;
 	public static volatile SingularAttribute<Indice, String> id;
 	public static volatile SingularAttribute<Indice, String> text;
 

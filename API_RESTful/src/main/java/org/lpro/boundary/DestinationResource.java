@@ -5,6 +5,7 @@
  */
 package org.lpro.boundary;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.ejb.Stateless;
@@ -13,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.lpro.entity.Destination;
+import org.lpro.entity.Indice;
 import org.lpro.entity.Partie;
 import org.lpro.entity.Point;
 
@@ -39,12 +41,13 @@ public class DestinationResource {
         return liste;
     }
 
-    public Destination ajouteDestination(String partieId, Destination destination) {
-        Destination d = new Destination(destination.getLat(),destination.getLng(),destination.getLieu(),destination.getDescription(),destination.getIndices());
-        d.setId(UUID.randomUUID().toString());
-        //d.setPartie(this.em.find(Partie.class, partieId));
-        this.em.persist(d);
-        return d;
+    public Destination ajouteDestination( Destination destination) {
+       
+        Destination des = new Destination(destination.getLat(),destination.getLng(),destination.getLieu(),destination.getDescription(),destination.getIndices());
+        des.setId(UUID.randomUUID().toString());      
+        
+        this.em.merge(des);
+        return des;
     }
 
     public void removeDestination(String destinationId) {

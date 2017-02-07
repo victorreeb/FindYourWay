@@ -38,11 +38,10 @@ public class PointResource {
         return liste;
     }
 
-    public Point ajoutePoint(String partieId, Point point) {
-        Point p = new Point(point.getLat(),point.getLng());
-        p.setId(UUID.randomUUID().toString());
-        p.setPartie(this.em.find(Partie.class, partieId));
-        this.em.persist(p);
+    public Point ajoutePoint(Point point) {
+        Point p = new Point(point.getLat(),point.getLng(),point.getAppellation());
+        p.setId(UUID.randomUUID().toString());        
+        this.em.merge(p);
         return p;
     }
 
