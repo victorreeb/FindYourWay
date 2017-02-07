@@ -140,22 +140,7 @@ public class DestinationRepresentation {
         return uri;
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+       
     
     
     
