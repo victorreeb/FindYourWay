@@ -8,6 +8,7 @@ package org.lpro.boundary;
 import java.util.List;
 import java.util.UUID;
 import javax.ejb.Stateless;
+import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
@@ -36,6 +37,14 @@ public class PointResource {
         query.setParameter("id", partieId);
         List<Point> liste = query.getResultList();
         return liste;
+    }
+    
+    public List<Point> findAdminAll(){
+        
+        Query q = this.em.createNamedQuery("Point.findAdminAll", Point.class);
+        // pour éviter les pbs de cache
+        q.setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH);
+        return q.getResultList();
     }
 
     public Point ajoutePoint(Point point) {

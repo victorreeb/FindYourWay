@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.GenericGenerator;
@@ -24,6 +26,10 @@ import org.hibernate.annotations.GenericGenerator;
  * @author remaki
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Point.findAll", query = "SELECT p FROM Point p where p.id = id"),
+    @NamedQuery(name="Point.findAdminAll",query="SELECT p from Point p")
+})
 public class Point implements Serializable {
 
     private static final long serialVersionUID = 1L;
