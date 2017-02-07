@@ -10,13 +10,13 @@
     function MapController($rootScope) {
         var vm = this;
 
-        vm.marqueurs = [];
+        vm.markers = [];
         vm.appellations = [];
         vm.indices = [];
 
         vm.initMap = (function initMap(){
           vm.map = L.map('mapid').setView([48.866, 2.333], 5);
-          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(vm.map);
+          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(vm.map);
 
         })();
 
@@ -33,24 +33,24 @@
         })();
 
         vm.map.on('click', function(e){
-          clickMarqueur(e);
+          addMarker(e);
         });
 
-        function clickMarqueur(coordonnees){
-          //coordonnees du click
-          console.log(coordonnees.latlng.lat);
-          console.log(coordonnees.latlng.lng);
-          addMarqueur(coordonnees);
-        };
-
-        function addMarqueur(coordonnees){
+        function addMarker(coordonnees){
           var marker = L.marker([coordonnees.latlng.lat, coordonnees.latlng.lng]).addTo(vm.map);
-          console.log(marker);
+          vm.markers.push(marker);
+          drawLinesMarkers();
         }
 
-        vm.printPath = (function printPath(){
-
-        })();
+        function drawLinesMarkers(){
+            var lines = [];
+            for(var i in vm.markers){
+              var x = vm.markers[i]._latlng.lat;
+              var y = vm.markers[i]._latlng.lng;
+              lines.push([x, y]);
+            }
+            L.polyline(lines).addTo(vm.map);
+        }
 
     }
 
