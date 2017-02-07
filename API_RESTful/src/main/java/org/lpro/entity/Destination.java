@@ -13,7 +13,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -65,7 +64,7 @@ public class Destination implements Serializable {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-    private ArrayList<String> indices; //collection
+    private List<Indice> indices; //collection
     
     
    @OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
@@ -158,7 +157,7 @@ public class Destination implements Serializable {
     }
 
 
-    public ArrayList<String> getIndices() {
+    public List<Indice> getIndices() {
         return indices;
     }
 
