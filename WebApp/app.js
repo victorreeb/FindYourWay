@@ -11,8 +11,8 @@
     function config($routeProvider, $locationProvider) {
         $routeProvider
             .when('/play', {
-                controller: 'HomeController',
-                templateUrl: 'components/home/homeView.html',
+                controller: 'MapController',
+                templateUrl: 'components/map/mapView.html',
                 controllerAs: 'vm'
             })
             .otherwise({ redirectTo: '/play' });
