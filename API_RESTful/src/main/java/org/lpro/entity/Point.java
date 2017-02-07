@@ -19,6 +19,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import javax.persistence.ManyToMany;
+
+import javax.persistence.ManyToOne;
+
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
@@ -113,6 +116,7 @@ public class Point implements Serializable {
 	 
 	
 
+
     public void setAppellation(String appellation) {
         this.appellation = appellation;
     }
@@ -121,10 +125,7 @@ public class Point implements Serializable {
     
     
 
-    
-    
-    
-    
+
 
 
 

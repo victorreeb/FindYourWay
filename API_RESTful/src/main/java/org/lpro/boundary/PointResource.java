@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.UUID;
 import javax.ejb.Stateless;
 
+
+
 import javax.persistence.CacheStoreMode;
 
 import javax.persistence.EntityManager;
@@ -40,9 +42,10 @@ public class PointResource {
         List<Point> liste = query.getResultList();
         return liste;
     }
+    
+   
 
 
-<<<<<<< HEAD
     
     public List<Point> findAdminAll(){
         
@@ -58,8 +61,6 @@ public class PointResource {
         return this.em.merge(p);
     }
 
-=======
->>>>>>> ajout création partie: méthode POST
     public Point ajoutePoint(String partieId, Point point) {
         Point p = new Point(point.getLat(),point.getLng());
         p.setId(UUID.randomUUID().toString());
