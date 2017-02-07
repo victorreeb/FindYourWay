@@ -4,8 +4,7 @@
     angular
         .module('app', ['ngRoute', 'ngCookies'])
         .config(config)
-        .constant('API_END_POINT','http://localhost/FindYourWay/WebApp')
-        .run(run);
+        .constant('API_END_POINT','http://localhost/FindYourWay/WebApp');
 
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {

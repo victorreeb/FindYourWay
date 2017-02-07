@@ -1,27 +1,70 @@
 <h1>FindYourWay Administration</h1>
 <div class="row">
-  <div class="col-lg-6">
-    <h2>Ajout de(s) Point(s)</h2><hr>
+  <div class="col-sm-6">
+    <h2>Ajout de Point</h2><hr>
     <form name="form" ng-submit="vm.addPoint()" role="form">
-        <h4>Coordonnee du point<h4><hr>
-        <div class="form-group">
-            <label for="latitude">Latitude</label>
-            <input type="latitude" name="latitude" id="latitude" class="form-control"  required />
-            <span ng-show="form.latitude.$dirty && form.latitude.$error.required" class="help-block">Latitude is required</span>
+      <h4>Coordonnee du point<h4><hr>
+      <div class="form-group">
+            <label for="point_latitude">Latitude</label>
+            <input typepoint_="number" name="point_latitude" id="point_latitude" class="form-control"  ng-model="vm.point_latitude" required />
 
-            <label for="longitude">Longitude</label>
-            <input type="longitude" name="longitude" id="longitude" class="form-control"  required />
-            <span ng-show="form.longitude.$dirty && form.longitude.$error.required" class="help-block">Longitude is required</span>
+            <label for="point_longitude">Longitude</label>
+            <input type="number" name="point_longitude" id="point_longitude" class="form-control"  ng-model="vm.point_longitude" required />
+
+      </div>
+      </br><hr><h4>Indice pour trouver le point<h4><hr>
+      <div class="form-group">
+              <label for="point_appellation">Indice</label>
+              <input type="text" name="point_appellation" id="point_appellation" class="form-control"  ng-model="vm.point_appellation" required />
+
+     </div>
+        <div class="form-actions">
+          <button type="submit" class="btn">Ajouter Point</button>
         </div>
-        <h4>Appellation pour trouver le point<h4><hr>
-          <div class="form-group">
-              <label for="appellation">Appellation</label>
-              <input type="appellation" name="appellation" id="appellation" class="form-control"  required />
-              <span ng-show="form.appellation.$dirty && form.appellation.$error.required" class="help-block">Appellaton is required</span>
+
     </form>
   </div>
-  <div class="col-lg-6">
-    <h2>Ajout de Destinations</h4><h2>
+    <div class="col-sm-6">
+      <h2>Ajout d'une Destination</h4><h2><hr>
+        <form name="form" ng-submit="vm.addDestination()" role="form">
+          <h4>Coordonnee de la Destination<h4><hr>
+          <div class="form-group">
+                <label for="dest_latitude">Latitude</label>
+                <input type="number" name="latitude" id="dest_latitude" class="form-control"  ng-model="vm.dest_latitude" required />
 
-  </div>
+                <label for="dest_longitude">Longitude</label>
+                <input type="number" name="dest_longitude" id="longitude" class="form-control" ng-model="vm.dest_longitude" required />
+
+          </div>
+        </br><hr><h4>Description de la Destination<h4><hr>
+          <div class="form-group">
+                <label for="dest_description">Description</label>
+                <input type="text" name="dest_description" id="dest_description" class="form-control"  ng-model="vm.dest_description" required />
+
+
+                <label for="dest_lieu">Lieu</label>
+                <input type="text" name="dest_lieu" id="dest_lieu" class="form-control"  ng-model="vm.dest_lieu" required />
+        </div>
+        </br><hr><h4>Indice pour trouver la Destination<h4><hr>
+          <div class="form-group">
+                  <label for="indice1">Indice 1</label>
+                  <input type="text" name="indice1" id="indice1" class="form-control"  ng-model="vm.indice1" required />
+
+                  <label for="indice2">Indice 2</label>
+                  <input type="text" name="indice2" id="dindice" class="form-control"  ng-model="vm.indice2" required />
+
+                  <label for="indice3">Indice 3</label>
+                  <input type="text" name="indice3" id="indice3" class="form-control"  ng-model="vm.indice3" required />
+
+                  <label for="indice4">Indice 4</label>
+                  <input type="text" name="indice4" id="indice4" class="form-control" ng-model="vm.indice4" required />
+
+                  <label for="indice5">Indice 5</label>
+                  <input type="text" name="indice5" id="indice5" class="form-control" ng-model="vm.indice5" required />
+       </div>
+       <div class="form-actions ">
+              <button type="submit" class="btn">Ajouter Destinnation</button>
+      </div>
+        </div>
+        </form>
 </div>

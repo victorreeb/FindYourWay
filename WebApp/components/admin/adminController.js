@@ -5,13 +5,24 @@
         .module('app')
         .controller('AdminController', AdminController);
 
-    HomeController.$inject = ['UserService', '$rootScope'];
+    AdminController.$inject = ['$rootScope'];
 
-    function AdminController(UserService, $rootScope) {
+
+    function AdminController($rootScope) {
         var vm = this;
-        vm.map = '';
 
 
+        vm.addPoint = (function addPoint(){
+
+
+
+          console.log(vm.point_longitude);
+
+        });
+
+        vm.addDestination = (function addDestination() {
+
+        })();
 
     }
 
