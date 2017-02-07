@@ -23,15 +23,19 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
  * @author remaki
  */
-@Entity //elle va persister dans la bdd
+@Entity  //pour dire qu'on ça va persister dans une table dans une base de données
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 // tous les messages qui appartiennent à la classe message
 @NamedQueries({
     @NamedQuery(name = "Partie.findAll", query = "SELECT p FROM Partie p")
@@ -40,7 +44,9 @@ public class Partie implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id //clé
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+
     private String id;
     
     private String nom;
@@ -55,8 +61,8 @@ public class Partie implements Serializable {
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
     private List<Point> points; //collection
     
-   @OneToOne(fetch=FetchType.LAZY)
-   @JoinColumn(name="id")
+   @OneToOne(cascade=CascadeType.ALL)
+  
    private Destination destination;
     
      @XmlElement(name="_links")

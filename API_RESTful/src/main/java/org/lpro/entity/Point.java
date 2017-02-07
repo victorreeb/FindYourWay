@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
@@ -25,8 +26,8 @@ import javax.xml.bind.annotation.XmlElement;
 public class Point implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
    
     private String lat;

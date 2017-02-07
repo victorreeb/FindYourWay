@@ -42,8 +42,9 @@ public class PartieResource {
 
     public Partie save(Partie partie) {
         partie.setId(UUID.randomUUID().toString());
-        partie.setPoints(new ArrayList<>());
-        partie.setDestination(new Destination());
+        partie.setPoints(partie.getPoints());
+        partie.setDestination(partie.getDestination());
+        
         return this.em.merge(partie);
     }
 

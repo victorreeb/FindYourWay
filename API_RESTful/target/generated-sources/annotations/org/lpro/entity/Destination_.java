@@ -11,7 +11,6 @@ public abstract class Destination_ {
 
 	public static volatile ListAttribute<Destination, Indice> indices;
 	public static volatile SingularAttribute<Destination, String> lng;
-	public static volatile SingularAttribute<Destination, Partie> partie;
 	public static volatile SingularAttribute<Destination, String> description;
 	public static volatile SingularAttribute<Destination, String> id;
 	public static volatile SingularAttribute<Destination, String> lat;

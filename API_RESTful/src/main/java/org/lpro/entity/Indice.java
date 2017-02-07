@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
@@ -20,16 +21,26 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Indice implements Serializable {
 
-   private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id  //la clé
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
     private String text;
     
      @ManyToOne // va se référer à u message  qui correspond à mapBy
     @JsonBackReference //cassser le cycle   
     private Destination destination;
-
+    
+     public Indice(){
+         
+     }
+     
+    public Indice(String text){
+        
+        this.text = text;
+    } 
+     
     public String getId() {
         return id;
     }

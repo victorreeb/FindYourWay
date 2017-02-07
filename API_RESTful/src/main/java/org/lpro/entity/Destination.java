@@ -18,32 +18,38 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
  * @author remaki
  */
-@Entity
+@Entity  //pour dire qu'on ça va persister dans une table dans une base de données
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Destination implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-    @Id //clé
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
     private String lat;
     private String lng;
     private String description;
     private String lieu;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @OneToMany( cascade = CascadeType.ALL,mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
     private List<Indice> indices; //collection
     
     
-   @OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
-   private Partie partie;
+   //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
+  // private Partie partie;
     @XmlElement(name="_links")
     @Transient 
     private List<Link>  links = new ArrayList<>();
@@ -54,13 +60,13 @@ public class Destination implements Serializable {
     }
     
     
-    public Destination(String lat,String lng, String description,String lieu){
+    public Destination(String lat,String lng, String description,String lieu,List<Indice> indices){
         
         this.lat = lat;
         this.lng = lng;
         this.description = description;
         this.lieu = lieu;
-        
+        this.indices = indices;
         
     }
     
@@ -132,13 +138,7 @@ public class Destination implements Serializable {
         this.indices = indices;
     }
 
-    public Partie getPartie() {
-        return partie;
-    }
-
-    public void setPartie(Partie partie) {
-        this.partie = partie;
-    }
+    
     
     
 }

@@ -5,18 +5,28 @@
  */
 package org.lpro.boundary;
 
+import control.KeyManagement;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.net.URI;
+import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import org.lpro.entity.Partie;
+import provider.AuthentificationFiltre;
 
 /**
  *
@@ -28,7 +38,11 @@ import org.lpro.entity.Partie;
 @Stateless
 public class PartieRepresentation {
     
-    
+    String token;
+    @Inject
+    private KeyManagement keyManagement;
+     @Inject
+    private AuthentificationFiltre filtre;
     @EJB // @Inject pareil, pour l'injection de dépendance
     PointResource ptResource;
     @EJB
@@ -37,13 +51,19 @@ public class PartieRepresentation {
     @EJB
     PartieResource partResource;
     
+     @Context
+    private UriInfo uriInfo;
     // création d'une partie
     @POST
     public Response addPartie(Partie partie, @Context UriInfo uriInfo) {
         Partie newPartie = this.partResource.save(partie);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(newPartie.getId()).build();
+        this.token = issueToken(newPartie.getId());
+        System.out.println("token =="+this.token);
+        URI uri = uriInfo.getAbsolutePathBuilder().path(newPartie.getId().toString())                
+                .build();
         return Response.created(uri)
-                .entity(newPartie)
+                .entity(newPartie).
+                header(AUTHORIZATION,"Bearer "+this.token)
                 .build();
     }
     
@@ -65,7 +85,22 @@ public class PartieRepresentation {
     
     
     
-    
+    private String issueToken(String commandeId) {
+        Key key = keyManagement.generateKey();
+        String jwtToken = Jwts.builder()
+                .setSubject(commandeId)
+                .setIssuer(uriInfo.getAbsolutePath().toString())
+                .setIssuedAt(new Date())
+                .setExpiration(toDate(LocalDateTime.now().plusMinutes(5L)))
+                .signWith(SignatureAlgorithm.HS512, key)
+                .compact();
+        System.out.println(">>>> token/key : " + jwtToken + " - " + key);
+        return jwtToken;
+    }
+
+    private Date toDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    } 
     
     
     
