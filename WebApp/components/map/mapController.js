@@ -32,9 +32,21 @@
 
         })();
 
-        vm.clickMarqueur = (function clickMarqueur(){
+        vm.map.on('click', function(e){
+          clickMarqueur(e);
+        });
 
-        })();
+        function clickMarqueur(coordonnees){
+          //coordonnees du click
+          console.log(coordonnees.latlng.lat);
+          console.log(coordonnees.latlng.lng);
+          addMarqueur(coordonnees);
+        };
+
+        function addMarqueur(coordonnees){
+          var marker = L.marker([coordonnees.latlng.lat, coordonnees.latlng.lng]).addTo(vm.map);
+          console.log(marker);
+        }
 
         vm.printPath = (function printPath(){
 
