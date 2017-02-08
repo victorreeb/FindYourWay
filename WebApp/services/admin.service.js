@@ -33,7 +33,7 @@
 
         //indices is a array of indices
         function CreerDestination(lat, lng, desc, lieu, indices) {
-            return $http.put('/api/privee/destinations', {latitude: lat, longitude: lng, description: desc, lieu: lieu, indices: indices}).then(handleSuccess, handleError('Error creating destination'));
+            return $http.post('/api/privee/destinations', {latitude: lat, longitude: lng, description: desc, lieu: lieu, indices: indices}).then(handleSuccess, handleError('Error creating destination'));
         }
 
 
