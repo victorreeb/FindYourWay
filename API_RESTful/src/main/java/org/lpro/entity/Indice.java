@@ -20,20 +20,20 @@ public class Indice implements Serializable {
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
     private String text;
-    
+
      @ManyToOne // va se référer à u message  qui correspond à mapBy
-    @JsonBackReference //cassser le cycle   
+    @JsonBackReference //cassser le cycle
     private Destination destination;
-    
+
      public Indice(){
-         
+
      }
-     
+
     public Indice(String text){
-        
+
         this.text = text;
-    } 
-     
+    }
+
     public String getId() {
         return id;
     }
@@ -57,7 +57,7 @@ public class Indice implements Serializable {
     public void setDestination(Destination destination) {
         this.destination = destination;
     }
-     
-     
+
+
 
 }

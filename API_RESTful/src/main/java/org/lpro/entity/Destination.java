@@ -7,26 +7,18 @@ package org.lpro.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
-<<<<<<< HEAD
-=======
->>>>>>> ajout création partie: méthode POST
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-<<<<<<< HEAD
 
-
-import javax.persistence.OneToMany;
-
-=======
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
->>>>>>> ajout création partie: méthode POST
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -46,7 +38,7 @@ import org.hibernate.annotations.GenericGenerator;
 @XmlAccessorType(XmlAccessType.FIELD)
 @NamedQueries({
     @NamedQuery(name="Destination.findAdminAll",query="SELECT d from Destination d"),
-    
+
 })
 
 
@@ -67,82 +59,82 @@ public class Destination implements Serializable {
     private String lieu;
 
     private ArrayList<String> indices = new ArrayList<>();
-    //@OneToMany(mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
+    //@OneToMany(mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires
     //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
      //collection
-    
-    
+
+
    //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
 
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
 
     private ArrayList<String> indices; //collection
 
 
-    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires
     //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-    
 
-    
-    
+
+
+
    @OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
    private Partie partie;
 
 
-    @OneToMany( cascade = CascadeType.ALL,mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @OneToMany( cascade = CascadeType.ALL,mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
     private List<Indice> indices; //collection
-    
-    
+
+
    //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
   // private Partie partie;
 
     @XmlElement(name="_links")
-    @Transient 
+    @Transient
     private List<Link>  links = new ArrayList<>();
-    
-    
+
+
     public Destination(){
-        
+
     }
-    
 
 
-    public Destination(String lat,String lng, String description,String lieu,ArrayList<String> indices){ 
-  
-        
+
+    public Destination(String lat,String lng, String description,String lieu,ArrayList<String> indices){
+
+
         this.lat = lat;
         this.lng = lng;
         this.description = description;
         this.lieu = lieu;
-        this.indices = indices;      
+        this.indices = indices;
 
 
-       
 
-        
+
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
     public List<Link> getLinks() {
-        
+
         return links;
     }
-    
-    
+
+
     public void addLink(String uri, String rel) {
-        
+
         this.links.add(new Link(rel, uri));
     }
 

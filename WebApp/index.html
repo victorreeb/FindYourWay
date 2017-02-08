@@ -10,9 +10,20 @@
 
 </head>
 <body>
+  <div header></div>
+
+    <div class="jumbotron">
+        <div class="container">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+                <div ng-view></div>
+            </div>
+        </div>
+    </div>
+
+
 
     <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script src="http://code.angularjs.org/1.6.0/angular.min.js"></script>
     <script src="http://code.angularjs.org/1.6.0/angular-route.min.js"></script>
@@ -20,5 +31,8 @@
 
     <script src="app.js"></script>
     <script src="components/home/homeController.js"></script>
+    <script src="components/admin/adminController.js"></script>
+    <script src="services/admin.service.js"></script>
+    <script src="services/flash.service.js"></script>
 </body>
 </html>
