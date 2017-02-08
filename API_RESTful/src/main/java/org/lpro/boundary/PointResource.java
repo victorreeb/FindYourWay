@@ -78,7 +78,7 @@ public class PointResource {
         
         return this.em.merge(partie);
 
-
+    }
 
     public void removePoint(String pointId) {
         try {
@@ -99,9 +99,8 @@ public class PointResource {
     } 
 
 
-    }
-
     
+}
     
 
 
