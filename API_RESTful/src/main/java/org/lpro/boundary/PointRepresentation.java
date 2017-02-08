@@ -47,10 +47,10 @@ public class PointRepresentation {
     @GET
     public Response getPoints(@Context UriInfo uriInfo) {
         
-        //liste des messages
+        //liste des points
         List<Point> liste = this.ptResource.findAdminAll();
         
-        //pour chaque message
+        //pour chaque point
         for(Point p : liste) {
             
            
@@ -94,7 +94,7 @@ public class PointRepresentation {
     
      @POST
     public Response addPoint(Point point, @Context UriInfo uriInfo) {
-        Point newPoint = this.ptResource.ajoutePoint(point);
+        Point newPoint = this.ptResource.addAdminPoint(point);
         URI uri = uriInfo.getAbsolutePathBuilder().path(newPoint.getId()).build();
         return Response.created(uri)
                 .entity(newPoint)

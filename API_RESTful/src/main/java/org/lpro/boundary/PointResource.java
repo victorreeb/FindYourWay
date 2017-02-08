@@ -55,7 +55,7 @@ public class PointResource {
     }
 
 
-    public Point ajoutePoint(Point point) {
+    public Point addAdminPoint(Point point) {
         Point p = new Point(point.getLat(),point.getLng(),point.getAppellation());
         p.setId(UUID.randomUUID().toString());        
         return this.em.merge(p);
@@ -65,7 +65,7 @@ public class PointResource {
     public Point ajoutePoint(String partieId, Point point) {
         Point p = new Point(point.getLat(),point.getLng());
         p.setId(UUID.randomUUID().toString());
-        p.setPartie(this.em.find(Partie.class, partieId));
+        
         this.em.persist(p);
 
       return p;
@@ -125,4 +125,4 @@ public class PointResource {
     
     
     
-}
+

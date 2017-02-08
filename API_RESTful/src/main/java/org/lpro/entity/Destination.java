@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
@@ -58,39 +59,7 @@ public class Destination implements Serializable {
     private String description;
     private String lieu;
 
-    private ArrayList<String> indices = new ArrayList<>();
-    //@OneToMany(mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires
-    //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-     //collection
-
-
-   //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
-
-
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires
-    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-
-    private ArrayList<String> indices; //collection
-
-
-    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")  // une instance de la classe message correspond plusieurs instance de commentaires
-    //@JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-
-
-
-
-   @OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
-   private Partie partie;
-
-
-    @OneToMany( cascade = CascadeType.ALL,mappedBy = "destination",fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires
-    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-    private List<Indice> indices; //collection
-
-
-   //@OneToOne(fetch=FetchType.LAZY, mappedBy="destination")
-  // private Partie partie;
+    private ArrayList<String> indices = new ArrayList<>();   
 
     @XmlElement(name="_links")
     @Transient
@@ -117,12 +86,6 @@ public class Destination implements Serializable {
 
 
     }
-
-
-
-
-
-
 
 
 

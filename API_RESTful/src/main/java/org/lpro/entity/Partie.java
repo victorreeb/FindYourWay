@@ -54,15 +54,17 @@ public class Partie implements Serializable {
     private String nom;
     private String description;
     
-    
+    @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
+   
+    private List<Point> points; //collection
     
     @ManyToOne // va se référer à u message  qui correspond à mapBy
     @JsonBackReference //cassser le cycle   
-    private Utilisateur user;
-    @ManyToMany( mappedBy = "parties")  // une instance de la classe message correspond plusieurs instance de commentaires 
-    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-
-   @OneToOne(cascade=CascadeType.ALL)
+    private Utilisateur utilisateur;
+    
+    
+    
+   @OneToOne
   
    private Destination destination;
     
@@ -118,13 +120,15 @@ public class Partie implements Serializable {
         this.description = description;
     }
 
-    public Utilisateur getUser() {
-        return user;
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
     }
 
-    public void setUser(Utilisateur user) {
-        this.user = user;
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
+
+   
 
     public List<Point> getPoints() {
         return points;

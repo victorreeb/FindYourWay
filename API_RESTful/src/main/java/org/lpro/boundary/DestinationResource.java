@@ -51,7 +51,7 @@ public class DestinationResource {
         return q.getResultList();
     }
      
-    public Destination ajouteDestination( Destination destination) {
+    public Destination ajouteAdminDestination( Destination destination) {
        
         Destination des = new Destination(destination.getLat(),destination.getLng(),destination.getLieu(),destination.getDescription(),destination.getIndices());
         des.setId(UUID.randomUUID().toString());      

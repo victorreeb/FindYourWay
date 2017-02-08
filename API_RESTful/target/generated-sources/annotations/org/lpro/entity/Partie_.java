@@ -9,11 +9,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Partie.class)
 public abstract class Partie_ {
 
+	public static volatile SingularAttribute<Partie, Utilisateur> utilisateur;
 	public static volatile SingularAttribute<Partie, Destination> destination;
 	public static volatile SingularAttribute<Partie, String> description;
 	public static volatile SingularAttribute<Partie, String> id;
 	public static volatile SingularAttribute<Partie, String> nom;
-	public static volatile SingularAttribute<Partie, Utilisateur> user;
 	public static volatile ListAttribute<Partie, Point> points;
 
 }
