@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
@@ -31,6 +33,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity  //pour dire qu'on ça va persister dans une table dans une base de données
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@NamedQueries({
+    @NamedQuery(name="Destination.findAdminAll",query="SELECT d from Destination d"),
+    
+})
 public class Destination implements Serializable {
 
   private static final long serialVersionUID = 1L;

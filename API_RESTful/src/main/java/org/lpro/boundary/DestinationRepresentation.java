@@ -6,13 +6,18 @@
 package org.lpro.boundary;
 
 import java.net.URI;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -35,6 +40,47 @@ public class DestinationRepresentation {
     
      @Context
     private UriInfo uriInfo;
+     
+     @GET
+    public Response getDestinations(@Context UriInfo uriInfo) {
+        
+        //liste des messages
+        List<Destination> liste = this.destResource.findAdminAll();
+        
+        //pour chaque message
+        for(Destination d : liste) {
+            
+            
+            d.getLinks().clear();
+            d.addLink(this.getUriForSelfDestination(uriInfo, d),"self");
+            
+            
+        
+        };
+        GenericEntity<List<Destination>> list = new GenericEntity<List<Destination>>(liste) {
+        };
+        return Response.ok(list, MediaType.APPLICATION_JSON).build();
+    }
+
+    @GET
+    @Path("/{destinationId}")
+    public Response getMessage(@PathParam("destinationId") String destinationId, @Context UriInfo uriInfo) {
+        Destination destination = this.destResource.findById(destinationId);
+        if (destination != null) {
+            
+            destination.getLinks().clear();
+            destination.addLink(this.getUriForSelfDestination(uriInfo, destination),"self");
+           
+            return Response.ok(destination).build();
+        } else {
+            
+            //pas besoin de lien 
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }    
+     
+     
+     
         
      @POST
     public Response addDestination(Destination destination, @Context UriInfo uriInfo) {
@@ -45,10 +91,37 @@ public class DestinationRepresentation {
                 .build();
     }
     
+    @DELETE
+    @Path("/{destinationId}")
+    public void deleteMessage(@PathParam("destinationId") String id) {
+        this.destResource.removeDestination(id);
+    }
     
     
+    //pour une destination particulière
+    private String getUriForSelfDestination(UriInfo uriInfo, Destination destination) {
+        
+        
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(DestinationRepresentation.class)
+                .path(destination.getId())
+                .build()
+                .toString();
+        return uri;
+                
+    }
     
-    
+    // pour la collection de destinations
+    private String getUriForDestination(UriInfo uriInfo) {
+        
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(DestinationRepresentation.class)
+                .build()
+                .toString();
+        
+        return uri;
+        
+    }
     
     
     

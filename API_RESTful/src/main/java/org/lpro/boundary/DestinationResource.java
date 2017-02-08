@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.ejb.Stateless;
+import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
@@ -40,7 +41,16 @@ public class DestinationResource {
         List<Destination> liste = query.getResultList();
         return liste;
     }
-
+    
+    
+     public List<Destination> findAdminAll(){
+        
+        Query q = this.em.createNamedQuery("Destination.findAdminAll", Destination.class);
+        // pour éviter les pbs de cache
+        q.setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH);
+        return q.getResultList();
+    }
+     
     public Destination ajouteDestination( Destination destination) {
        
         Destination des = new Destination(destination.getLat(),destination.getLng(),destination.getLieu(),destination.getDescription(),destination.getIndices());

@@ -103,7 +103,7 @@ public class PointRepresentation {
     
     
     
-     //pour un message particulier
+     //pour un point particulier
     private String getUriForSelfPoint(UriInfo uriInfo, Point point) {
         
         
@@ -116,7 +116,7 @@ public class PointRepresentation {
                 
     }
     
-    // pour la collection de messages
+    // pour la collection de points
     private String getUriForPoint(UriInfo uriInfo) {
         
         String uri = uriInfo.getBaseUriBuilder()
