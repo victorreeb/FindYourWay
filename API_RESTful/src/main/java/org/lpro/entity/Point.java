@@ -15,20 +15,15 @@ import javax.persistence.GenerationType;
 
 
 import javax.persistence.Entity;
-<<<<<<< HEAD
-import javax.persistence.GeneratedValue;
-=======
 
->>>>>>> ajout d'autres resources
+import javax.persistence.GeneratedValue;
+
 import javax.persistence.Id;
 
 import javax.persistence.ManyToMany;
-<<<<<<< HEAD
 
 import javax.persistence.ManyToOne;
 
-=======
->>>>>>> ajout d'autres resources
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
@@ -114,13 +109,7 @@ public class Point implements Serializable {
     public void setLng(String lng) {
         this.lng = lng;
     }
-<<<<<<< HEAD
-=======
-      
-    
-        
-	
->>>>>>> ajout d'autres resources
+
 
     public String getAppellation() {
         return appellation;
@@ -135,15 +124,5 @@ public class Point implements Serializable {
         this.appellation = appellation;
     }
 
-<<<<<<< HEAD
-    
-    
-    
 
-
-
-
-
-=======
->>>>>>> ajout d'autres resources
 }

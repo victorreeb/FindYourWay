@@ -58,7 +58,7 @@ public class DestinationResource {
         
         this.em.merge(des);
         return des;
-
+    }
 
     public Destination ajouteDestination(String partieId, Destination destination) {
         Destination d = new Destination(destination.getLat(),destination.getLng(),destination.getLieu(),destination.getDescription(),destination.getIndices());
