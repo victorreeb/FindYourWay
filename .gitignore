@@ -1,2 +1,4 @@
 /target/
 .settings/
+/home/remaki/LP_CISIIE_2016-2017/programmation_web_serveur/FindYourWay/API_RESTful/target/classes/org/lpro/boundary/*.class
+/home/remaki/LP_CISIIE_2016-2017/programmation_web_serveur/FindYourWay/API_RESTful/target/classes/org/lpro/entity/*.class
