@@ -92,6 +92,23 @@ public class DestinationRepresentation {
                 .build();
     }
     
+    
+     //PUT: modification d'un objet de la collection
+    
+    @PUT
+    @Path("{id}")
+    public Destination update(@PathParam("id") String id, Destination destination) {
+        Destination dest = this.destResource.findById(id);
+        dest.setLat(destination.getLat());
+        dest.setLng(destination.getLng());
+        dest.setDescription(destination.getDescription());
+        dest.setLieu(destination.getLieu());
+        dest.setIndices(destination.getIndices());
+        return this.destResource.save(destination);
+    }
+    
+    
+    
     @DELETE
     @Path("/{destinationId}")
     public void deleteMessage(@PathParam("destinationId") String id) {

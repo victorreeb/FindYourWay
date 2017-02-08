@@ -87,8 +87,6 @@ public class PointResource {
             // on veut supprimer, et elle n'existe pas, donc c'est bon
         }
 
-
-    
         
         
     }
@@ -98,10 +96,6 @@ public class PointResource {
         
       return this.em.merge(point);
     } 
-
-    
-
-    
 
 
     
