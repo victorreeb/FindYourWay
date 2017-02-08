@@ -45,10 +45,10 @@ public class DestinationRepresentation {
      @GET
     public Response getDestinations(@Context UriInfo uriInfo) {
         
-        //liste des messages
+        //liste des destinations
         List<Destination> liste = this.destResource.findAdminAll();
         
-        //pour chaque message
+        //pour chaque destination
         for(Destination d : liste) {
             
             
@@ -65,7 +65,7 @@ public class DestinationRepresentation {
 
     @GET
     @Path("/{destinationId}")
-    public Response getMessage(@PathParam("destinationId") String destinationId, @Context UriInfo uriInfo) {
+    public Response getDestination(@PathParam("destinationId") String destinationId, @Context UriInfo uriInfo) {
         Destination destination = this.destResource.findById(destinationId);
         if (destination != null) {
             
@@ -85,7 +85,7 @@ public class DestinationRepresentation {
         
      @POST
     public Response addDestination(Destination destination, @Context UriInfo uriInfo) {
-        Destination newDestination = this.destResource.ajouteDestination(destination);
+        Destination newDestination = this.destResource.ajouteAdminDestination(destination);
         URI uri = uriInfo.getAbsolutePathBuilder().path(newDestination.getId()).build();
         return Response.created(uri)
                 .entity(newDestination)
@@ -104,7 +104,7 @@ public class DestinationRepresentation {
         dest.setDescription(destination.getDescription());
         dest.setLieu(destination.getLieu());
         dest.setIndices(destination.getIndices());
-        return this.destResource.save(destination);
+        return this.destResource.save(dest);
     }
     
     

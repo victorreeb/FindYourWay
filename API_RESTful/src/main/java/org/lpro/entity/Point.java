@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 
 import javax.persistence.GeneratedValue;
 
@@ -51,8 +53,8 @@ public class Point implements Serializable {
     private String lat;
     private String lng;
     private String appellation;
-     @ManyToMany // va se référer à u message  qui correspond à mapBy
-    @JsonBackReference //cassser le cycle   
+     @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER) // va se référer à u message  qui correspond à mapBy
+    //@JsonBackReference //cassser le cycle   
     private List<Partie> parties;
     @XmlElement(name="_links")
     @Transient 
@@ -70,7 +72,7 @@ public class Point implements Serializable {
           this.lat = lat;
           this.lng = lng;
           this.appellation = appellation;
-
+           this.parties = new ArrayList<>();
     }
     
     public List<Link> getLinks() {
@@ -122,6 +124,14 @@ public class Point implements Serializable {
 
     public void setAppellation(String appellation) {
         this.appellation = appellation;
+    }
+
+    public List<Partie> getParties() {
+        return parties;
+    }
+
+    public void setParties(List<Partie> parties) {
+        this.parties = parties;
     }
 
 

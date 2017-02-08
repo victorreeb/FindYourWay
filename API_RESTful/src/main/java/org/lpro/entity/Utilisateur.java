@@ -39,7 +39,7 @@ public class Utilisateur implements Serializable {
     private String password;
     private int type;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "utilisateur")  // une instance de la classe message correspond plusieurs instance de commentaires 
     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
     private List<Partie> parties; //collection
     @XmlElement(name="_links")
