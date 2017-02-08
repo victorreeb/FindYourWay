@@ -74,9 +74,8 @@ public class PointResource {
       return this.em.merge(point);
     } 
 
-    }
-
     
+}
     
 
     
