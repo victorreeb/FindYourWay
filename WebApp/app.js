@@ -2,7 +2,7 @@
   //  'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies'])
+        .module('app', ['ngRoute', 'ngCookies', 'ngSanitize'])
         .config(config)
         // .constant('API_END_POINT','http://localhost/api')
         ;

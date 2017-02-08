@@ -5,40 +5,97 @@
         .module('app')
         .controller('MapController', MapController);
 
-    MapController.$inject = ['$rootScope'];
+    MapController.$inject = ['$rootScope', 'MapService'];
 
-    function MapController($rootScope) {
+    function MapController($rootScope, MapService) {
         var vm = this;
 
+        vm.token = '';
+        vm.iteration = 1;
+        vm.score = 5;
         vm.markers = [];
-        vm.appellations = [];
+        vm.appellation = 'exemple La ville est la capitale européenne.';
         vm.indices = [];
+        // exemple
+        // vm.indices.push("test 1");
+        // vm.indices.push("test 2");
+        // vm.indices.push(null); // pas affiché
+        // vm.indices.push("Tour Eiffel");
+
+
+        function play(){
+          var max_points = 5; // points à jouer
+          if(vm.iteration > 0 && vm.iteration < max_points){
+
+            // vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1].latlng.lat, vm.markers[vm.iteration-1].latlng.lng));
+            refreshIndice();
+            vm.appellation = MapService.getPoint(); //get next Point
+          }
+          else if(vm.iteration === 5){
+
+            // vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1].latlng.lat, vm.markers[vm.iteration-1].latlng.lng));
+            refreshIndice();
+            vm.appellation = MapService.getDestination();
+          }
+          else if(vm.iteration === 6){
+            // vm.score = MapService.getScore();
+            vm.map.off('click');
+            refreshScore();
+          }
+        }
 
         vm.initMap = (function initMap(){
+          var token = MapService.getPartie();
+          vm.appellation = MapService.getPoint(); //getPoint 1
+          refreshAppellation(vm.iteration);
           vm.map = L.map('mapid').setView([48.866, 2.333], 5);
           L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(vm.map);
-
         })();
 
-        vm.refreshAppellation = (function refreshAppellation(){
+        function refreshAppellation(i){
+          var title = '<h4>Placer le point (' + i + ')</h4>';
+          if(i === 6){
+            title = '<h4>Placer la destination (' + i + ')</h4>';
+          }
+          vm.appellation_print = title + '<br><p>Indice : ' + vm.appellation + '</p>';
+        }
 
-        })();
+        function refreshIndice(){
+          var title = '';
+          if(vm.indices.length === 1){
+            title = "<h4>Indice disponible pour trouver la destination finale</h4>";
+          }
+          else if(vm.indices.length > 1){
+            title = "<h4>Indices disponibles pour trouver la destination finale</h4>";
+          }
+          else{
+            title = "<h4>Aucun indice disponible pour trouver la destination finale</h4>";
+          }
+          vm.indices_print = title + '<ul>';
+          for(var i = 0; i < vm.indices.length ; i++){
+            if(vm.indices[i] !== null){
+              vm.indices_print += "<li>" + vm.indices[i] + "</li>";
+            }
+          }
+          vm.indices_print += '</ul>';
+        }
 
-        vm.refreshIndice = (function refreshIndice(){
+        function refreshScore(){
+          vm.score_print = "<p class='text-center'>Partie terminée ! Vous avez obtenu " + vm.score + " points</p>";
+        }
 
-        })();
-
-        vm.refreshScore = (function refreshScore(){
-
-        })();
-
+        /**
+        * Listener on click on Map to add new marker
+        */
         vm.map.on('click', function(e){
           addMarker(e);
+          refreshAppellation(vm.iteration+1);
+          play();
+          vm.iteration += 1;
         });
 
         function addMarker(coordonnees){
-          var marker = L.marker([coordonnees.latlng.lat, coordonnees.latlng.lng]).addTo(vm.map);
-          vm.markers.push(marker);
+          vm.markers.push(L.marker([coordonnees.latlng.lat, coordonnees.latlng.lng]).addTo(vm.map));
           drawLinesMarkers();
         }
 

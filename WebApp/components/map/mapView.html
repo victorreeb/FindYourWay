@@ -1,22 +1,18 @@
 <h3 class="text-center bold">Find your way</h3>
-<div class="score_container"></div>
+<div class="score_container" ng-bind-html="vm.score_print"></div>
 <div class="row">
   <div class="col-sm-6">
     {{vm.initMap}}
     <div id="mapid" class="map_container"></div>
-    <p class="text-center">Trouver le point sur la carte</p>
+    <p class="text-center">Cliquer pour placer le point sur la carte</p>
   </div>
   <div class="col-sm-6">
-    <h4>Placer le point</h4>
-    <p>Appellation</p>
     <!-- appellation du point courant ici -->
-    <div class="appellation_container"></div>
+    <div class="appellation_container" ng-bind-html="vm.appellation_print"></div>
 
     <hr>
-
-    <h4>Indices pour trouver la destination finale</h4>
     <!-- indices ajoutés ici -->
-    <div class="indice_container"></div>
+    <div class="indice_container" ng-bind-html="vm.indices_print"></div>
 
   </div>
 </div>
