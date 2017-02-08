@@ -113,7 +113,6 @@ public class PointRepresentation {
         point.setAppellation(pt.getAppellation());
         return this.ptResource.save(point);
     }
-    
 
     private String getUriForSelfPoint(UriInfo uriInfo, Point point) {
         

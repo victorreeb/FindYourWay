@@ -92,9 +92,15 @@ public class DestinationRepresentation {
                 .build();
     }
     
+    @DELETE
+    @Path("/{destinationId}")
+    public void deleteMessage(@PathParam("destinationId") String id) {
+        this.destResource.removeDestination(id);
+    }
     
      //PUT: modification d'un objet de la collection
     
+
     @PUT
     @Path("{id}")
     public Destination update(@PathParam("id") String id, Destination destination) {
@@ -106,8 +112,31 @@ public class DestinationRepresentation {
         dest.setIndices(destination.getIndices());
         return this.destResource.save(destination);
     }
+    //pour une destination particulière
+    private String getUriForSelfDestination(UriInfo uriInfo, Destination destination) {
+        
+        
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(DestinationRepresentation.class)
+                .path(destination.getId())
+                .build()
+                .toString();
+        return uri;
+                
+
+    }
     
-    
+    // pour la collection de destinations
+    private String getUriForDestination(UriInfo uriInfo) {
+        
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(DestinationRepresentation.class)
+                .build()
+                .toString();
+        
+        return uri;
+        
+    }
     
     @DELETE
     @Path("/{destinationId}")
