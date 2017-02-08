@@ -13,6 +13,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -90,6 +91,23 @@ public class DestinationRepresentation {
                 .entity(newDestination)
                 .build();
     }
+    
+    
+     //PUT: modification d'un objet de la collection
+    
+    @PUT
+    @Path("{id}")
+    public Destination update(@PathParam("id") String id, Destination destination) {
+        Destination dest = this.destResource.findById(id);
+        dest.setLat(destination.getLat());
+        dest.setLng(destination.getLng());
+        dest.setDescription(destination.getDescription());
+        dest.setLieu(destination.getLieu());
+        dest.setIndices(destination.getIndices());
+        return this.destResource.save(destination);
+    }
+    
+    
     
     @DELETE
     @Path("/{destinationId}")

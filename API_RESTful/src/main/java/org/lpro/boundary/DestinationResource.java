@@ -15,7 +15,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.lpro.entity.Destination;
-import org.lpro.entity.Indice;
 import org.lpro.entity.Partie;
 import org.lpro.entity.Point;
 
@@ -66,9 +65,15 @@ public class DestinationResource {
             this.em.remove(ref);
         } catch (EntityNotFoundException e) {
             // on veut supprimer, et elle n'existe pas, donc c'est bon
-        }
+        }            
+        
+        
     }
 
+     public Destination save (Destination destination) {
+        
+      return this.em.merge(destination);
+    } 
     
     
     

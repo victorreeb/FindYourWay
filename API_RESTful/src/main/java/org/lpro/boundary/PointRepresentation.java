@@ -13,6 +13,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -101,7 +102,17 @@ public class PointRepresentation {
     }
     
     
+     //PUT: modification d'un objet de la collection
     
+    @PUT
+    @Path("{id}")
+    public Point update(@PathParam("id") String id, Point pt) {
+        Point point = this.ptResource.findById(id);
+        point.setLat(pt.getLat());
+        point.setLng(pt.getLng());
+        point.setAppellation(pt.getAppellation());
+        return this.ptResource.save(point);
+    }
     
      //pour un point particulier
     private String getUriForSelfPoint(UriInfo uriInfo, Point point) {

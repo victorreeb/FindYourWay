@@ -61,10 +61,16 @@ public class PointResource {
         } catch (EntityNotFoundException e) {
             // on veut supprimer, et elle n'existe pas, donc c'est bon
         }
+    
+        
+        
     }
 
     
-    
+     public Point save (Point point) {
+        
+      return this.em.merge(point);
+    } 
     
     
     
