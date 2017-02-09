@@ -1,83 +1,138 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.lpro.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+
+import javax.persistence.GeneratedValue;
 
 import javax.persistence.Id;
 
-public class Point implements Serializable{
+import javax.persistence.ManyToMany;
+
+import javax.persistence.ManyToOne;
+
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
+import org.hibernate.annotations.GenericGenerator;
+
+
+/**
+ *
+ * @author remaki
+ */
+@Entity
+@NamedQueries({
+    @NamedQuery(name = "Point.findAll", query = "SELECT p FROM Point p where p.id = id"),
+    @NamedQuery(name="Point.findAdminAll",query="SELECT p from Point p")
+})
+public class Point implements Serializable {
+
+
+    private static final long serialVersionUID = 1L;
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    private String id;
+   
+    private String lat;
+    private String lng;
+    private String appellation;
+     @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER) // va se référer à u message  qui correspond à mapBy
+    //@JsonBackReference //cassser le cycle   
+    private List<Partie> parties;
+    @XmlElement(name="_links")
+    @Transient 
+    private List<Link>  links = new ArrayList<>();
+    
+     public Point() {
+    }
+
+    public Point(String lat, String lng) {
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    public Point(String lat, String lng,String appellation) {
+          this.lat = lat;
+          this.lng = lng;
+          this.appellation = appellation;
+           this.parties = new ArrayList<>();
+    }
+    
+    public List<Link> getLinks() {
+        
+        return links;
+    }
+    
+    
+    public void addLink(String uri, String rel) {
+        
+        this.links.add(new Link(rel, uri));
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+
+    public String getAppellation() {
+        return appellation;
+    }
+
 	
-	private static final long serialVersionUID = 1L;
+	 
 	
-	@Id
-	private String id;
-	
-	private int latitude;
-	private int longitude;
-	private String appellation;
-	
-	public Point(){}
-	
-	public Point(int lat, int longi, String appellation){
-		this.latitude = lat;
-		this.longitude = longi;
-		this.appellation = appellation;
-	}
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setAppellation(String appellation) {
+        this.appellation = appellation;
+    }
 
-	/**
-	 * @return the latitude
-	 */
-	public int getLatitude() {
-		return latitude;
-	}
+    public List<Partie> getParties() {
+        return parties;
+    }
 
-	/**
-	 * @param latitude the latitude to set
-	 */
-	public void setLatitude(int latitude) {
-		this.latitude = latitude;
-	}
+    public void setParties(List<Partie> parties) {
+        this.parties = parties;
+    }
 
-	/**
-	 * @return the longitude
-	 */
-	public int getLongitude() {
-		return longitude;
-	}
 
-	/**
-	 * @param longitude the longitude to set
-	 */
-	public void setLongitude(int longitude) {
-		this.longitude = longitude;
-	}
-
-	/**
-	 * @return the appellation
-	 */
-	public String getAppellation() {
-		return appellation;
-	}
-
-	/**
-	 * @param appellation the appellation to set
-	 */
-	public void setAppellation(String appellation) {
-		this.appellation = appellation;
-	}
-
-	
 }
