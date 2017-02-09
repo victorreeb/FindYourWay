@@ -5,64 +5,63 @@
         .module('app')
         .controller('headerController', headerController);
 
-    headerController.$inject = ['UserService' , 'AuthenticationService', '$location', '$rootScope', 'FlashService','$scope'];
-    function headerController(AuthenticationService, $location, $rootScope, FlashService,$scope,UserService) {
+    headerController.$inject = ['$window','AuthenticationService', '$location','$cookies', '$scope' , 'UserService' , '$rootScope', 'FlashService'];
+    function headerController($window,AuthenticationService, $location, $cookies,$scope,UserService,$rootScope, FlashService) {
 
 
-        //var loggedIn = $rootScope.globals.currentUser || null;
-       // alert(loggedIn);
+  
+      function TestCtrl($scope) {
+    $scope.loading = true;
+    setTimeout(function () {
+        $scope.$apply(function(){
+            $scope.loading = false;
+        });
+    }, 1000);
+    }
 
-       //$scope.fullname = $rootScope.globals.currentUser.username || "";
-      // $scope.fullname = $rootScope.globals.currentUser.username ? $rootScope.globals.currentUser.username : "";
+    
 
-       // alert($rootScope.globals.currentUser.username);
+
+    setTimeout(function () {
+        $scope.$apply(function () {
+            $scope.msg = ( AuthenticationService.isLogged() );
+        });
+    }, 10);
+
+   
+
         $scope.currentUser = function () {
-           return $rootScope.globals.currentUser ? $rootScope.globals.currentUser.username : "";
+           return logged ? AuthenticationService.getUserInfo() : "";
         }
 
-       $scope.isActive = function (viewLocation) {
-            return viewLocation === $location.path();
-        };
+      $scope.isActive = function(route) {
+        return route === $location.path();
+    }
 
-
-          function register() {
-            vm.dataLoading = true;
-            UserService.Create(vm.user)
-                .then(function (response) {
-
-                    if (response.success) {
-                        FlashService.Success('Registration successful',true);
-                        vm.dataLoading = false;
-                        $location.path('/login');
-                    } else {
-                        FlashService.Error(response.message);
-                        vm.dataLoading = false;
-                    }
-                });
-        }
 
 
         $scope.logout = function () {
                 UserService.SignOutUser()
                 .then(function (response) {
-
-                    alert(response);
-                   // AuthenticationService.ClearCredentials();
-                    //$location.path('/');
-
+                    AuthenticationService.ClearCredentials();
+                    $location.path('/');
+                    
                 });
-                //AuthenticationService.ClearCredentials();
 
-                //return;
             };
 
-        $scope.isLogged = function(){
+        $scope.isLogged =  function(){
 
-            if( $rootScope.globals.currentUser )
+          if( !$rootScope.globals.currentUser )
                 return true ;
             return false;
 
         };
+
+
+
+
+
 
     }
 

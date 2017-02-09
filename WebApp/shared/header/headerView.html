@@ -1,0 +1,28 @@
+
+<nav class="navbar navbar-default">
+
+      </ul>
+
+
+      <ul class="nav navbar-nav navbar-right" >
+
+
+  
+      <li ng-hide="msg" ng-class="{ active: isActive('/register')}"> <a href="#!/register">Register</a></li>
+        <li ng-hide="msg" ng-class="{ active: isActive('/login')}"> <a href="#!/login">Login</a></li>
+
+
+
+        <li ng-show="msg" class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ currentUser() }}<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+          
+           <li><a href="#!/profile">Profil</a></li>
+             <li><a href="" ng-click="logout()" target="_self">LogOut</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
