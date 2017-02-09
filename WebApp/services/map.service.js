@@ -20,7 +20,7 @@
         * récupère token
         */
         function postPartie(nom, description){
-          return $http.post('/api/parties', {nom: nom, description: description}).then(handleSuccess, handleError('Error get Partie'));
+          return $http.post('/findyourway/api/parties', {nom: nom, description: description}).then(handleSuccess, handleError('Error get Partie'));
 
         }
 
@@ -28,21 +28,21 @@
         * récupère appellation
         */
         function getPoint(){
-          return $http.get('/api/parties/point').then(handleSuccess, handleError('Error get Point'));
+          return $http.get('/findyourway/api/parties/point').then(handleSuccess, handleError('Error get Point'));
         }
 
         /**
         * recupère un indice final
         */
         function postPoint(lat, lng){
-          return $http.post('/api/parties/point', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Point'));
+          return $http.post('/findyourway/api/parties/point', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Point'));
         }
 
         /**
         * récupère score
         */
         function postDestination(lat, lng){
-          return $http.post('/api/parties/destination', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Destination'));
+          return $http.post('/findyourway/api/parties/destination', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Destination'));
 
         }
 

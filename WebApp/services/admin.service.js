@@ -20,20 +20,20 @@
         return service;
 
         function GetAllPoint() {
-          return $http.get('/api/privee/points').then(handleSuccess, handleError('Error getting all users'));
+          return $http.get('/findyourway/api/privee/points').then(handleSuccess, handleError('Error getting all users'));
         }
 
         function GetAllDestination() {
-          return $http.get('/api/privee/destinations').then(handleSuccess, handleError('Error getting all users'));
+          return $http.get('/findyourway/api/privee/destinations').then(handleSuccess, handleError('Error getting all users'));
         }
 
         function CreerPoint(lat, lng, appellation) {
-            return $http.post('/api/privee/points', {latitude: lat, longitude: lng, appellation: appellation}).then(handleSuccess, handleError('Error creating point'));
+            return $http.post('/findyourway/api/privee/points', {latitude: lat, longitude: lng, appellation: appellation}).then(handleSuccess, handleError('Error creating point'));
         }
 
         //indices is a array of indices
         function CreerDestination(lat, lng, desc, lieu, indices) {
-            return $http.post('/api/privee/destinations', {latitude: lat, longitude: lng, description: desc, lieu: lieu, indices: indices}).then(handleSuccess, handleError('Error creating destination'));
+            return $http.post('/findyourway/api/privee/destinations', {latitude: lat, longitude: lng, description: desc, lieu: lieu, indices: indices}).then(handleSuccess, handleError('Error creating destination'));
         }
 
 
