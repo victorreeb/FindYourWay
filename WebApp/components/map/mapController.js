@@ -5,9 +5,9 @@
         .module('app')
         .controller('MapController', MapController);
 
-    MapController.$inject = ['$rootScope', 'MapService'];
+    MapController.$inject = ['$scope', 'MapService', 'FlashService'];
 
-    function MapController($rootScope, MapService) {
+    function MapController($scope, MapService, FlashService) {
         var vm = this;
 
         vm.token = '';
@@ -17,22 +17,22 @@
         vm.appellation = 'exemple La ville est la capitale européenne.';
         vm.indices = [];
         // exemple
-        // vm.indices.push("test 1");
-        // vm.indices.push("test 2");
-        // vm.indices.push(null); // pas affiché
-        // vm.indices.push("Tour Eiffel");
+        vm.indices.push("test 1");
+        vm.indices.push("test 2");
+        vm.indices.push(null); // pas affiché
+        vm.indices.push("Tour Eiffel");
 
 
         function play(){
           var max_points = 5; // points à jouer
           if(vm.iteration > 0 && vm.iteration < max_points){
-
+            refreshAppellation(vm.iteration+1);
             // vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1].latlng.lat, vm.markers[vm.iteration-1].latlng.lng));
             refreshIndice();
             vm.appellation = MapService.getPoint(); //get next Point
           }
           else if(vm.iteration === 5){
-
+            refreshAppellation(vm.iteration+1);
             // vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1].latlng.lat, vm.markers[vm.iteration-1].latlng.lng));
             refreshIndice();
             vm.appellation = MapService.getDestination();
@@ -81,7 +81,10 @@
         }
 
         function refreshScore(){
-          vm.score_print = "<p class='text-center'>Partie terminée ! Vous avez obtenu " + vm.score + " points</p>";
+          $scope.$apply(function(){
+            FlashService.Success('Partie terminée ! Vous avez obtenu ' + vm.score + ' points', true);
+            // vm.score_print = "<p class='text-center'>Part terminée ! Vous avez obtenu " + vm.score + " points</p>";
+          });
         }
 
         /**
@@ -89,7 +92,6 @@
         */
         vm.map.on('click', function(e){
           addMarker(e);
-          refreshAppellation(vm.iteration+1);
           play();
           vm.iteration += 1;
         });
