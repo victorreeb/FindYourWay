@@ -280,7 +280,7 @@ public class PartieRepresentation {
     
     private boolean verifierPoint(double lat, double lng){
         
-        boolean res=false;
+        boolean res=true;
         
         if(this.currentPartie.getPoints().get(this.etape).getLat()==lat && this.currentPartie.getPoints().get(this.etape).getLng()==lng){
             
@@ -296,7 +296,7 @@ public class PartieRepresentation {
     
     private boolean verifieDestination(double lat, double lng){
         
-        boolean res=false;
+        boolean res=true;
         
         if((this.currentPartie.getDestination().get(0).getLat())==lat && (this.currentPartie.getDestination().get(0).getLng())==lng ){
             
