@@ -5,6 +5,7 @@
  */
 package org.lpro.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 
@@ -16,6 +17,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -54,12 +56,15 @@ public class Destination implements Serializable {
 
 
     private String id;
-    private String lat;
-    private String lng;
+    private double lat;
+    private double lng;
     private String description;
     private String lieu;
 
-    private ArrayList<String> indices = new ArrayList<>();   
+    private ArrayList<String> indices = new ArrayList<>();
+    @ManyToOne // va se référer à u message  qui correspond à mapBy
+    @JsonBackReference //cassser le cycle   
+    private Partie partie;
 
     @XmlElement(name="_links")
     @Transient
@@ -72,7 +77,7 @@ public class Destination implements Serializable {
 
 
 
-    public Destination(String lat,String lng, String description,String lieu,ArrayList<String> indices){
+    public Destination(double lat,double lng, String description,String lieu,ArrayList<String> indices){
 
 
         this.lat = lat;
@@ -87,6 +92,20 @@ public class Destination implements Serializable {
 
     }
 
+ public Destination(double lat,double lng, String description,String lieu,ArrayList<String> indices,Partie partie){
+
+
+        this.lat = lat;
+        this.lng = lng;
+        this.description = description;
+        this.lieu = lieu;
+        this.indices = indices;
+        this.partie = partie;
+
+
+
+
+    }
 
 
 
@@ -109,19 +128,19 @@ public class Destination implements Serializable {
         this.id = id;
     }
 
-    public String getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
+    public double getLng() {
         return lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(double lng) {
         this.lng = lng;
     }
 
@@ -148,6 +167,14 @@ public class Destination implements Serializable {
 
     public void setIndices(ArrayList<String> indices) {
         this.indices = indices;
+    }
+
+    public Partie getPartie() {
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
     }
 
 

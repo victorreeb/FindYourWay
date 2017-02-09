@@ -1,7 +1,6 @@
 package org.lpro.entity;
 
 import javax.annotation.Generated;
-import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
@@ -9,11 +8,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Point.class)
 public abstract class Point_ {
 
-	public static volatile SingularAttribute<Point, String> lng;
-	public static volatile ListAttribute<Point, Partie> parties;
+	public static volatile SingularAttribute<Point, Double> lng;
+	public static volatile SingularAttribute<Point, Partie> partie;
 	public static volatile SingularAttribute<Point, String> id;
 	public static volatile SingularAttribute<Point, String> appellation;
-	public static volatile SingularAttribute<Point, String> lat;
+	public static volatile SingularAttribute<Point, Double> lat;
 
 }
 
