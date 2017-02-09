@@ -20,19 +20,19 @@
         function play(){
           var max_points = 5;
           if(vm.iteration > 0 && vm.iteration < max_points){
-            vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1].latlng.lat, vm.markers[vm.iteration-1].latlng.lng));
+            vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng));
             refreshIndice();
             vm.appellation = MapService.getPoint();
             refreshAppellation(vm.iteration+1);
           }
           else if(vm.iteration === 5){
             refreshAppellation(vm.iteration+1);
-            vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1].latlng.lat, vm.markers[vm.iteration-1].latlng.lng));
+            vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng));
             refreshIndice();
             vm.appellation = '';
           }
           else if(vm.iteration === 6){
-            vm.score = MapService.postDestination(lat, lng);
+            vm.score = MapService.postDestination(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng);
             vm.map.off('click');
             refreshScore();
           }
