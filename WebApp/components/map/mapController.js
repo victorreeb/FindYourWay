@@ -12,41 +12,36 @@
 
         vm.token = '';
         vm.iteration = 1;
-        vm.score = 5;
+        vm.score = 0;
         vm.markers = [];
-        vm.appellation = 'exemple La ville est la capitale européenne.';
+        vm.appellation = '';
         vm.indices = [];
-        // exemple
-        vm.indices.push("test 1");
-        vm.indices.push("test 2");
-        vm.indices.push(null); // pas affiché
-        vm.indices.push("Tour Eiffel");
-
 
         function play(){
-          var max_points = 5; // points à jouer
+          var max_points = 5;
           if(vm.iteration > 0 && vm.iteration < max_points){
-            refreshAppellation(vm.iteration+1);
-            // vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1].latlng.lat, vm.markers[vm.iteration-1].latlng.lng));
+            vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng));
             refreshIndice();
-            vm.appellation = MapService.getPoint(); //get next Point
+            vm.appellation = MapService.getPoint();
+            refreshAppellation(vm.iteration+1);
           }
           else if(vm.iteration === 5){
             refreshAppellation(vm.iteration+1);
-            // vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1].latlng.lat, vm.markers[vm.iteration-1].latlng.lng));
+            vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng));
             refreshIndice();
-            vm.appellation = MapService.getDestination();
+            vm.appellation = '';
           }
           else if(vm.iteration === 6){
-            // vm.score = MapService.getScore();
+            vm.score = MapService.postDestination(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng);
             vm.map.off('click');
             refreshScore();
           }
         }
 
         vm.initMap = (function initMap(){
-          var token = MapService.getPartie();
-          vm.appellation = MapService.getPoint(); //getPoint 1
+          //ajouter les params des champs lors de la création d'une partie
+          var token = MapService.postPartie('nom_test', 'description_test');
+          vm.appellation = MapService.getPoint();
           refreshAppellation(vm.iteration);
           vm.map = L.map('mapid').setView([48.866, 2.333], 5);
           L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(vm.map);
@@ -54,10 +49,12 @@
 
         function refreshAppellation(i){
           var title = '<h4>Placer le point (' + i + ')</h4>';
+          var indice = '<br><p>Indice : ' + vm.appellation + '</p>';
           if(i === 6){
             title = '<h4>Placer la destination (' + i + ')</h4>';
+            indice = '<br><p>Servez-vous des indices trouvés ci-dessous pour retrouver la destination !</p>';
           }
-          vm.appellation_print = title + '<br><p>Indice : ' + vm.appellation + '</p>';
+          vm.appellation_print = title + indice;
         }
 
         function refreshIndice(){
@@ -83,7 +80,6 @@
         function refreshScore(){
           $scope.$apply(function(){
             FlashService.Success('Partie terminée ! Vous avez obtenu ' + vm.score + ' points', true);
-            // vm.score_print = "<p class='text-center'>Part terminée ! Vous avez obtenu " + vm.score + " points</p>";
           });
         }
 
@@ -93,7 +89,9 @@
         vm.map.on('click', function(e){
           addMarker(e);
           play();
-          vm.iteration += 1;
+          if(vm.iteration < 6){
+            vm.iteration += 1;
+          }
         });
 
         function addMarker(coordonnees){
