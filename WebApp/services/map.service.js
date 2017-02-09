@@ -9,44 +9,40 @@
     function MapService($http, $rootScope) {
         var service = {};
 
-        service.getPartie = getPartie;
+        service.postPartie = postPartie;
         service.getPoint = getPoint;
         service.postPoint = postPoint;
-        service.getIndice = getIndice;
-        service.getDestination = getDestination;
         service.postDestination = postDestination;
-        service.getScore = getScore;
 
         return service;
 
-        function getPartie(){
-          return $http.get('/api/parties').then(handleSuccess, handleError('Error get Partie'));
+        /**
+        * récupère token
+        */
+        function postPartie(nom, description){
+          return $http.post('/api/parties', {nom: nom, description: description}).then(handleSuccess, handleError('Error get Partie'));
 
         }
 
-        function getPoint(){ // get appellation
-          return $http.get('/api/points').then(handleSuccess, handleError('Error get Point'));
+        /**
+        * récupère appellation
+        */
+        function getPoint(){
+          return $http.get('/api/parties/point').then(handleSuccess, handleError('Error get Point'));
         }
 
+        /**
+        * recupère un indice final
+        */
         function postPoint(lat, lng){
-          return $http.post('/api/points', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Point'));
+          return $http.post('/api/parties/point', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Point'));
         }
 
-        function getIndice(){
-          return $http.get('/api/indices').then(handleSuccess, handleError('Error get Indice'));
-        }
-
-        function getDestination(){
-          return $http.get('/api/destinations').then(handleSuccess, handleError('Error get Destination'));
-        }
-
+        /**
+        * récupère score
+        */
         function postDestination(lat, lng){
-          return $http.post('/api/destinations', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Destination'));
-
-        }
-
-        function getScore(){
-          return $http.get('/api/score').then(handleSuccess, handleError('Error get Partie'));
+          return $http.post('/api/parties/destination', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Destination'));
 
         }
 
