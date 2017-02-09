@@ -1,0 +1,40 @@
+<div class="col-md-6 col-md-offset-3">
+
+
+{{ madiv }}
+   <form name="form" ng-submit="vm.register()" role="form">
+
+
+        <div class="form-group" ng-class="{'has-error': form.fullname.$dirty && form.fullname.$touched && form.fullname.$error.required ,  'has-success': form.fullname.$valid}">
+            <label for="fullname">Fullname</label>
+            <input type="text" name="fullname" id="fullname" class="form-control" ng-model="vm.user.fullname" required />
+            <span ng-show="form.fullname.$touched && form.fullname.$error.required" class="help-block">Full name is required</span>
+        </div>
+
+
+
+          <div class="form-group" ng-class="{'has-error': form.email.$touched && form.email.$error.required || form.email.$error.email ,  'has-success': form.email.$valid}">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" class="form-control" ng-model="vm.user.email" required />
+            <span ng-show="form.email.$touched && form.email.$error.required" class="help-block">Email is not valid</span>
+        </div>
+
+          
+
+
+           <div class="form-group" ng-class="{'has-error': form.password.$dirty && form.password.$touched && form.password.$error.required ,  'has-success': form.password.$valid}">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control" ng-model="vm.user.password" required />
+            <span ng-show="form.password.$touched && form.password.$error.required" class="help-block">Password is required</span>
+        </div>
+
+
+
+  
+        <div class="form-actions text-center">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Register</button>
+        </div>
+
+    </form>
+</div>
+
