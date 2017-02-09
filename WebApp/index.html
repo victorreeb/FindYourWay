@@ -11,8 +11,9 @@
 </head>
 <body>
   <div header></div>
+    <h1 class="text-center">Find Your Way</h1>
+    <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
     <div class="container">
-      <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
       <div ng-view></div>
     </div>
     <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
