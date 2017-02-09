@@ -2,19 +2,19 @@
   //  'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies'])
+        .module('app', ['ngRoute', 'ngCookies', 'ngSanitize'])
         .config(config)
-        // .constant('API_END_POINT','http://localhost/FindYourWay/WebApp');
+        // .constant('API_END_POINT','http://localhost/api')
+        ;
 
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
         $routeProvider
             .when('/play', {
-                controller: 'HomeController',
-                templateUrl: 'components/home/homeView.html',
+                controller: 'MapController',
+                templateUrl: 'components/map/mapView.html',
                 controllerAs: 'vm'
             })
-
 
             .when('/admin', {
                 controller: 'AdminController',
@@ -24,7 +24,4 @@
 
             .otherwise({ redirectTo: '/play' });
     }
-
-
-
 })();
