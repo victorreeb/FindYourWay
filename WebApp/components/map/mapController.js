@@ -16,6 +16,14 @@
         vm.markers = [];
         vm.appellation = '';
         vm.indices = [];
+        vm.afficher_map = afficher_map ;
+        vm.booleanMap = false;
+
+
+        function afficher_map()
+        {
+          vm.booleanMap = true;
+        }
 
         function play(){
           var max_points = 5;
@@ -40,7 +48,7 @@
 
         vm.initMap = (function initMap(){
           //ajouter les params des champs lors de la création d'une partie
-          var token = MapService.postPartie('nom_test', 'description_test');
+          var token = MapService.postPartie(vm.partie);
           TokenService.addHeader(token);
           vm.appellation = MapService.getPoint();
           refreshAppellation(vm.iteration);
