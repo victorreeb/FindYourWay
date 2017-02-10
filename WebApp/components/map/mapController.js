@@ -5,12 +5,12 @@
         .module('app')
         .controller('MapController', MapController);
 
-    MapController.$inject = ['$scope', 'MapService', 'FlashService'];
+    MapController.$inject = ['$scope', 'MapService', 'FlashService', 'TokenService'];
 
-    function MapController($scope, MapService, FlashService) {
+    function MapController($scope, MapService, FlashService, TokenService) {
         var vm = this;
 
-        vm.token = '';
+        vm.token = {};
         vm.iteration = 1;
         vm.score = 0;
         vm.markers = [];
@@ -41,6 +41,7 @@
         vm.initMap = (function initMap(){
           //ajouter les params des champs lors de la création d'une partie
           var token = MapService.postPartie('nom_test', 'description_test');
+          TokenService.addHeader(token);
           vm.appellation = MapService.getPoint();
           refreshAppellation(vm.iteration);
           vm.map = L.map('mapid').setView([48.866, 2.333], 5);

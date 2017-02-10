@@ -7,17 +7,27 @@
 
     TokenService.$inject = ['$http', '$rootScope'];
     function TokenService($http, $rootScope) {
+
         var service = {};
 
+        service.addHeader = addHeader;
         service.setToken = setToken;
         service.getToken = getToken;
-        ervice.deleteToken = deleteToken;
+        service.deleteToken = deleteToken;
 
         return service;
 
         this.token = '';
-        
-        this.setToken = function(t) {
+
+        /**
+        * ajoute le token au header
+        */
+        function addHeader(ptoken){
+          $http.defaults.headers.common['Authorization'] = ptoken;
+          console.log($http.defaults.headers.common['Authorization']);
+        }
+
+        function setToken(t) {
           if (localStorage.getItem('token') === null) {
             localStorage.setItem('token', t);
           } else {
@@ -25,26 +35,13 @@
           }
         }
 
-        this.getToken = function() {
+        function getToken() {
             return localStorage.getItem('token');
         }
 
-        this.deleteToken = function() {
+        function deleteToken() {
             if (localStorage.getItem('token') !== null)
                 localStorage.removeItem('token');
-        }
-
-
-        // private functions
-
-        function handleSuccess(res) {
-            return res.data;
-        }
-
-        function handleError(error) {
-            return function () {
-                return { success: false, message: error };
-            };
         }
     }
 
