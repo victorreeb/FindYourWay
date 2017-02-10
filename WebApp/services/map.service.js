@@ -28,7 +28,7 @@
         * récupère appellation
         */
         function getPoint(){
-          return $http.get('/findyourway/api/parties/point').then(handleSuccess, handleError('Error get Point'));
+          return $http.get(':8080/findyourway/api/parties/point').then(handleSuccess, handleError('Error get Point'));
         }
 
         /**
