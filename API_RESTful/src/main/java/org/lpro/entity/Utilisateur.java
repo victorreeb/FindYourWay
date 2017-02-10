@@ -1,47 +1,48 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.lpro.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author remaki
+ * @author ZAKARIA
  */
-@Entity
+
+@Entity  //pour dire qu'on ça va persister dans une table dans une base de données
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+
 public class Utilisateur implements Serializable {
+    
+    
+    private static final long serialVersionUID = 1L;
 
-     private static final long serialVersionUID = 1L;
-
-    @Id  //la clé
+    @Id
     private String id;
-    
-    private String nom;
-    private String prenom;
-    private String mail;
+     
+    // Mot de passe
     private String password;
-    private int type;
+
+    // FullName
+    private String fullName;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "utilisateur")  // une instance de la classe message correspond plusieurs instance de commentaires 
-    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
-    private List<Partie> parties; //collection
+    // Email
+    @Column(unique = true)
+    private String email;
+    
+    // 0 pour les utilisateurs et 1 pour les admins
+    private int user_type = 0 ;
+
+   
     @XmlElement(name="_links")
     @Transient 
     private List<Link>  links = new ArrayList<>();
@@ -57,6 +58,23 @@ public class Utilisateur implements Serializable {
         this.links.add(new Link(rel, uri));
     }
 
+    //constructeur vide pour JPA 
+    public Utilisateur() {
+    }
+    
+    public Utilisateur(String email , String fullName, String password) {
+        this.email = email;
+        this.fullName = fullName;
+        this.password = password;
+        //this.password = password;
+        
+    }
+
+    public int getUserType()
+    {
+        return user_type;
+    }
+    
     public String getId() {
         return id;
     }
@@ -64,54 +82,34 @@ public class Utilisateur implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-
-    public String getNom() {
-        return nom;
+    
+    
+    //Getters et setters 
+    public String getfullName()
+    {
+        return fullName;
     }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Partie> getParties() {
-        return parties;
-    }
-
-    public void setParties(List<Partie> parties) {
-        this.parties = parties;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
+    
+    public void setfullName(String fullName)
+    {
+        this.fullName = fullName;
     }
    
     
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
+    
+    public String getPassword()
+    {
+        return password;
+    }
+    
+    public String getEmail()
+    {
+        return email;
+    }
+
 }
+
