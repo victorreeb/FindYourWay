@@ -5,12 +5,12 @@
         .module('app')
         .controller('MapController', MapController);
 
-    MapController.$inject = ['$scope', 'MapService', 'FlashService'];
+    MapController.$inject = ['$scope', 'MapService', 'FlashService', 'TokenService'];
 
-    function MapController($scope, MapService, FlashService) {
+    function MapController($scope, MapService, FlashService, TokenService) {
         var vm = this;
 
-        vm.token = '';
+        vm.token = {};
         vm.iteration = 1;
         vm.score = 0;
         vm.markers = [];
@@ -41,6 +41,7 @@
         vm.initMap = (function initMap(){
           //ajouter les params des champs lors de la création d'une partie
           var token = MapService.postPartie('nom_test', 'description_test');
+          TokenService.addHeader(token);
           vm.appellation = MapService.getPoint();
           refreshAppellation(vm.iteration);
           vm.map = L.map('mapid').setView([48.866, 2.333], 5);
@@ -49,7 +50,7 @@
 
         function refreshAppellation(i){
           var title = '<h4>Placer le point (' + i + ')</h4>';
-          var indice = '<br><p>Indice : ' + vm.appellation + '</p>';
+          var indice = '<br><p>Question : ' + vm.appellation + '</p>';
           if(i === 6){
             title = '<h4>Placer la destination (' + i + ')</h4>';
             indice = '<br><p>Servez-vous des indices trouvés ci-dessous pour retrouver la destination !</p>';
@@ -71,6 +72,7 @@
           vm.indices_print = title + '<ul>';
           for(var i = 0; i < vm.indices.length ; i++){
             if(vm.indices[i] !== null){
+              console.log(vm.indices[i]);
               vm.indices_print += "<li>" + vm.indices[i] + "</li>";
             }
           }

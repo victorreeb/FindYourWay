@@ -34,14 +34,19 @@ public class DestinationResource {
         return this.em.find(Destination.class, id);
     }
 
+    public Destination findOneDestination(String partieId) {
+        Query query = em.createQuery("SELECT d FROM Destination d where d.partie.id= :id ");
+        query.setParameter("id", partieId);
+        Destination liste = (Destination)query.getSingleResult();
+        return liste;
+    }
+
     public List<Destination> findAll(String partieId) {
         Query query = em.createQuery("SELECT d FROM Destination d where d.partie.id= :id ");
         query.setParameter("id", partieId);
         List<Destination> liste = query.getResultList();
         return liste;
     }
-
-    
     
      public List<Destination> findAdminAll(){
         
@@ -64,7 +69,7 @@ public class DestinationResource {
         Destination d = new Destination(destination.getLat(),destination.getLng(),destination.getLieu(),destination.getDescription(),destination.getIndices());
         d.setId(UUID.randomUUID().toString());
         //d.setPartie(this.em.find(Partie.class, partieId));
-        this.em.persist(d);
+        this.em.merge(d);
         return d;
 
     }
