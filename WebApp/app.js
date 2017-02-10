@@ -16,7 +16,7 @@
                 templateUrl: 'components/home/homeView.html',
                 controllerAs: 'vm'
             })
-            
+
             .when('/play', {
                 controller: 'MapController',
                 templateUrl: 'components/map/mapView.html',
@@ -53,7 +53,7 @@
 
         if(  $rootScope[''] = $http.defaults.headers.common['Authorization']  )
 
-  
+
       //  $http.defaults.headers.common['Authorization'] = "Bearer  " + ;
        // $http.defaults.headers.common["Access-Control-Allow-Headers"] =  "Origin, X-Requested-With, Content-Type, Accept";
         $http.defaults.headers.common["Access-Control-Allow-Origin"] =  "*";
