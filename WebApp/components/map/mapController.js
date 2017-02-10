@@ -17,12 +17,13 @@
         vm.appellation = '';
         vm.indices = [];
         vm.afficher_map = afficher_map ;
-        vm.booleanMap = false;
+        $scope.booleanMap = false;
 
 
         function afficher_map()
         {
-          vm.booleanMap = true;
+          $scope.booleanMap = ! $scope.booleanMap;
+          initMap();
         }
 
         function play(){
@@ -46,15 +47,29 @@
           }
         }
 
-        vm.initMap = (function initMap(){
+        function initMap(){
           //ajouter les params des champs lors de la création d'une partie
-          var token = MapService.postPartie(vm.partie);
+
+          console.log(vm.partie);
+          var token = MapService.postPartie(vm.partie.nom,vm.partie.description);
           TokenService.addHeader(token);
           vm.appellation = MapService.getPoint();
           refreshAppellation(vm.iteration);
           vm.map = L.map('mapid').setView([48.866, 2.333], 5);
           L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(vm.map);
-        })();
+
+
+             /**
+          * Listener on click on Map to add new marker
+          */
+          vm.map.on('click', function(e){
+            addMarker(e);
+            play();
+            if(vm.iteration < 6){
+              vm.iteration += 1;
+            }
+          });
+        }
 
         function refreshAppellation(i){
           var title = '<h4>Placer le point (' + i + ')</h4>';
@@ -93,16 +108,7 @@
           });
         }
 
-        /**
-        * Listener on click on Map to add new marker
-        */
-        vm.map.on('click', function(e){
-          addMarker(e);
-          play();
-          if(vm.iteration < 6){
-            vm.iteration += 1;
-          }
-        });
+       
 
         function addMarker(coordonnees){
           vm.markers.push(L.marker([coordonnees.latlng.lat, coordonnees.latlng.lng]).addTo(vm.map));

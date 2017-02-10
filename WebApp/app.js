@@ -2,7 +2,7 @@
   //  'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies'])
+        .module('app', ['ngRoute', 'ngCookies','ngSanitize'])
         .config(config)
         .run(run)
         .constant('API_END_POINT','http://127.0.0.1:8080/findYourWay');

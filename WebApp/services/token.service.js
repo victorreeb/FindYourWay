@@ -8,6 +8,8 @@
     TokenService.$inject = ['$http', '$rootScope'];
     function TokenService($http, $rootScope) {
 
+        this.token = '';
+        
         var service = {};
 
         service.addHeader = addHeader;
@@ -17,7 +19,7 @@
 
         return service;
 
-        this.token = '';
+        
 
         /**
         * ajoute le token au header

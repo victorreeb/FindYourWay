@@ -1,7 +1,4 @@
-
-{{ vm.booleanMap }}
-
-<div ng-show="!vm.booleanMap" class="col-md-6 col-md-offset-3">
+<div ng-show="!booleanMap" class="col-md-6 col-md-offset-3">
 
    <form name="form" ng-submit="vm.afficher_map()" role="form">
 
@@ -33,11 +30,12 @@
 
 
 
+<div ng-show="booleanMap">
 
-<div ng-show="vm.booleanMap == 2" class="score_container" ng-bind-html="vm.score_print"></div>
+
 <div class="row">
   <div class="col-sm-6">
-    {{vm.initMap}}
+  
     <div id="mapid" class="map_container"></div>
     <p class="text-center">Cliquer pour placer le point sur la carte</p>
   </div>
@@ -50,4 +48,6 @@
     <div class="indice_container" ng-bind-html="vm.indices_print"></div>
 
   </div>
+</div>
+
 </div>
