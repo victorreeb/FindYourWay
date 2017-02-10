@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 
 
 import javax.persistence.Entity;
@@ -22,7 +20,6 @@ import javax.persistence.GeneratedValue;
 
 import javax.persistence.Id;
 
-import javax.persistence.ManyToMany;
 
 import javax.persistence.ManyToOne;
 
@@ -39,7 +36,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Point.findAll", query = "SELECT p FROM Point p where p.id = id"),
+    @NamedQuery(name = "Point.findAll", query = "SELECT p FROM Point p where p.id =:id"),
     @NamedQuery(name="Point.findAdminAll",query="SELECT p from Point p")
 })
 public class Point implements Serializable {
@@ -50,12 +47,14 @@ public class Point implements Serializable {
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
    
-    private String lat;
-    private String lng;
+    private double lat;
+    private double lng;
     private String appellation;
-     @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER) // va se référer à u message  qui correspond à mapBy
-    //@JsonBackReference //cassser le cycle   
-    private List<Partie> parties;
+    @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.EAGER) // va se référer à u message  qui correspond à mapBy
+    @JsonBackReference //cassser le cycle   
+    private Partie partie;
+       
+    
     @XmlElement(name="_links")
     @Transient 
     private List<Link>  links = new ArrayList<>();
@@ -63,16 +62,18 @@ public class Point implements Serializable {
      public Point() {
     }
 
-    public Point(String lat, String lng) {
+    public Point(double lat, double lng,String appellation) {
         this.lat = lat;
         this.lng = lng;
+        this.appellation = appellation;
     }
 
-    public Point(String lat, String lng,String appellation) {
+    public Point(double lat, double lng,String appellation,Partie partie) {
           this.lat = lat;
           this.lng = lng;
           this.appellation = appellation;
-           this.parties = new ArrayList<>();
+          this.partie = partie;
+          
     }
     
     public List<Link> getLinks() {
@@ -96,19 +97,19 @@ public class Point implements Serializable {
         this.id = id;
     }
 
-    public String getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
+    public double getLng() {
         return lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(double lng) {
         this.lng = lng;
     }
 
@@ -126,13 +127,15 @@ public class Point implements Serializable {
         this.appellation = appellation;
     }
 
-    public List<Partie> getParties() {
-        return parties;
+    public Partie getPartie() {
+        return partie;
     }
 
-    public void setParties(List<Partie> parties) {
-        this.parties = parties;
+    public void setPartie(Partie partie) {
+        this.partie = partie;
     }
+
+   
 
 
 }

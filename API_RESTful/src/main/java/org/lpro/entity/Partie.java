@@ -53,8 +53,10 @@ public class Partie implements Serializable {
     
     private String nom;
     private String description;
-    
-    @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partie")  // une instance de la classe message correspond plusieurs instance de commentaires 
+    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+   
+   // @ManyToMany(cascade = CascadeType.ALL)  // une instance de la classe message correspond plusieurs instance de commentaires 
    
     private List<Point> points; //collection
     
@@ -64,9 +66,9 @@ public class Partie implements Serializable {
     
     
     
-   @OneToOne
-  
-   private Destination destination;
+   
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "partie")
+   private List <Destination> destination;
     
      @XmlElement(name="_links")
     @Transient 
@@ -88,7 +90,7 @@ public class Partie implements Serializable {
         this.points = new ArrayList<>();
     }
 
-    public Partie(String id, String nom, String description,Destination destination) {
+    public Partie(String id, String nom, String description,List<Destination> destination) {
         this.id = id; 
         this.nom = nom;
         this.description = description;
@@ -138,11 +140,11 @@ public class Partie implements Serializable {
         this.points = points;
     }
 
-    public Destination getDestination() {
+    public List <Destination> getDestination() {
         return destination;
     }
 
-    public void setDestination(Destination destination) {
+    public void setDestination(List <Destination> destination) {
         this.destination = destination;
     }
     

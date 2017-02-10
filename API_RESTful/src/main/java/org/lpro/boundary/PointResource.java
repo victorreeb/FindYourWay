@@ -35,7 +35,7 @@ public class PointResource {
     }
 
     public List<Point> findAll(String partieId) {
-        Query query = em.createQuery("SELECT p FROM Point p where p.partie.id= :id ");
+        Query query = em.createQuery("SELECT p FROM Point p where p.id =:id");
         query.setParameter("id", partieId);
         List<Point> liste = query.getResultList();
         return liste;
@@ -63,10 +63,10 @@ public class PointResource {
 
 
     public Point ajoutePoint(String partieId, Point point) {
-        Point p = new Point(point.getLat(),point.getLng());
+        Point p = new Point(point.getLat(),point.getLng(),point.getAppellation());
         p.setId(UUID.randomUUID().toString());
         
-        this.em.persist(p);
+        this.em.merge(p);
 
       return p;
     }
