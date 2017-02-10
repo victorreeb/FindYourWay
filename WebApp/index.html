@@ -3,36 +3,62 @@
 <head>
     <meta charset="utf-8" />
     <title>FindYourWay</title>
-    <link rel="stylesheet" href="https://bootswatch.com/simplex/bootstrap.min.css" />
+    <!--<link rel="stylesheet" *ef="https://bootswatch.com/simplex/bootstrap.min.css" />-->
+    <link rel="stylesheet" href="assets/css/bootstrap_custom.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
     <link rel="stylesheet" href="assets/css/app.css" />
 
 </head>
 <body>
-  <div header></div>
-    <h1 class="text-center">Find Your Way</h1>
-    <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
-    <div class="container">
-      <div ng-view></div>
+
+ <ian-header></ian-header>
+
+     <div class="jumbotron">
+        <div class="container">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+                <div ng-view></div>
+            </div>
+        </div>
     </div>
+
     <hr>
     <p class="text-center">Kamel Remaki, Zakaria El Ouarchi, Pierre Becker, Victor Reeb</p>
+
     <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script src="http://code.angularjs.org/1.6.0/angular.min.js"></script>
     <script type="text/javascript" src="./assets/js/angular-1.6.1/angular-sanitize.min.js"></script>
-    <script src="http://code.angularjs.org/1.6.0/angular-route.min.js"></script>
+   <script src="http://code.angularjs.org/1.6.0/angular-route.min.js"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.js"></script>
     <script src="http://code.angularjs.org/1.6.0/angular-cookies.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 
+
+
     <script src="app.js"></script>
+
+    <script src="services/flash.service.js"></script>
+    <script src="services/user.service.js"></script>
+    <script src="services/authentication.service.js"></script>
+
+    <script src="shared/header/headerController.js"></script>
+    <script src="shared/header/headerDirective.js"></script>
+    <script src="components/login/loginController.js"></script>
+    <script src="components/register/registerController.js"></script>
+    <script src="components/home/homeController.js"></script>
     <script src="components/map/mapController.js"></script>
     <script src="services/map.service.js"></script>
     <script src="components/admin/adminController.js"></script>
     <script src="services/admin.service.js"></script>
     <script src="services/token.service.js"></script>
     <script src="services/flash.service.js"></script>
+
+  <script src="services/token.service.js"></script>-->
+
     <script src="services/token.service.js"></script>
+
 </body>
 </html>
