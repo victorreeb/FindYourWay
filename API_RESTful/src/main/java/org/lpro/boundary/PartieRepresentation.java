@@ -92,10 +92,9 @@ public class PartieRepresentation {
         System.out.println("token =="+this.token);
         URI uri = uriInfo.getAbsolutePathBuilder().path(newPartie.getId().toString())                
                 .build();
-        return Response.created(uri).
-             
-                header(AUTHORIZATION,"Bearer "+this.token)
-                .build();
+        JsonObject jsonResult = Json.createObjectBuilder().add("token",  this.token ).build();
+            
+        return Response.ok().entity(jsonResult).build();
     }
     
      @GET

@@ -21,8 +21,8 @@
         /**
         * récupère token
         */
-        function postPartie(nom, description){
-          return $http.post('http://127.0.0.1:8080/findYourWay/api/parties', {"nom": nom, "description": description}).then(handleSuccess, handleError('Error get Partie'));
+        function postPartie(pnom, pdescription){
+          return $http.post('http://127.0.0.1:8080/findYourWay/api/parties', {"nom": pnom, "description": pdescription}).then(handleSuccess, handleError('Error get Partie'));
 
         }
 
@@ -51,7 +51,7 @@
         // private functions
 
         function handleSuccess(res) {
-            return res.data;
+            return { success: true, message: res.data, headers_content: res.headers()['Authorization'] };
         }
 
         function handleError(error) {
