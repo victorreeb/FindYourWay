@@ -50,9 +50,11 @@
         function initMap(){
           //ajouter les params des champs lors de la création d'une partie
 
-          console.log(vm.partie);
-          var token = MapService.postPartie(vm.partie.nom,vm.partie.description);
-          TokenService.addHeader(token);
+            MapService.postPartie(vm.partie.nom, vm.partie.description).then(function(response){
+              console.log(response.message.token);
+              TokenService.addHeader(response.message.token);
+            });
+
           vm.appellation = MapService.getPoint();
           refreshAppellation(vm.iteration);
           vm.map = L.map('mapid').setView([48.866, 2.333], 5);
@@ -95,7 +97,6 @@
           vm.indices_print = title + '<ul>';
           for(var i = 0; i < vm.indices.length ; i++){
             if(vm.indices[i] !== null){
-              console.log(vm.indices[i]);
               vm.indices_print += "<li>" + vm.indices[i] + "</li>";
             }
           }
@@ -108,7 +109,7 @@
           });
         }
 
-       
+
 
         function addMarker(coordonnees){
           vm.markers.push(L.marker([coordonnees.latlng.lat, coordonnees.latlng.lng]).addTo(vm.map));

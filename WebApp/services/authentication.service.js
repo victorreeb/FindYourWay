@@ -10,7 +10,7 @@
         var service = {};
 
 
-        console.log($rootScope.globals);
+        
 
 
         service.Login = Login;
@@ -95,7 +95,7 @@
             }
             return  "";
         }
-    
+
 
     };
 

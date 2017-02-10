@@ -51,13 +51,16 @@
         function run($rootScope, $location, $http,$cookies) {
 
 
-        if(  $rootScope[''] = $http.defaults.headers.common['Authorization']  )
+        // if(  $rootScope[''] = $http.defaults.headers.common['Authorization']  )
 
 
       //  $http.defaults.headers.common['Authorization'] = "Bearer  " + ;
        // $http.defaults.headers.common["Access-Control-Allow-Headers"] =  "Origin, X-Requested-With, Content-Type, Accept";
-        $http.defaults.headers.common["Access-Control-Allow-Origin"] =  "*";
 
+
+        //
+        // $http.defaults.headers.common["Access-Control-Allow-Origin"] =  "*";
+        //
         $http.defaults.headers.common['Accept'] = "application/json";
         $http.defaults.headers.common['Content-Type'] = "application/json";
 
