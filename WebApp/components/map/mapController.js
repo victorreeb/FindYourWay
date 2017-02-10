@@ -50,7 +50,7 @@
 
         function refreshAppellation(i){
           var title = '<h4>Placer le point (' + i + ')</h4>';
-          var indice = '<br><p>Indice : ' + vm.appellation + '</p>';
+          var indice = '<br><p>Question : ' + vm.appellation + '</p>';
           if(i === 6){
             title = '<h4>Placer la destination (' + i + ')</h4>';
             indice = '<br><p>Servez-vous des indices trouvés ci-dessous pour retrouver la destination !</p>';
@@ -72,6 +72,7 @@
           vm.indices_print = title + '<ul>';
           for(var i = 0; i < vm.indices.length ; i++){
             if(vm.indices[i] !== null){
+              console.log(vm.indices[i]);
               vm.indices_print += "<li>" + vm.indices[i] + "</li>";
             }
           }
