@@ -6,22 +6,12 @@
         .controller('headerController', headerController);
 
     headerController.$inject = ['$window','AuthenticationService', '$location','$cookies', '$scope' , 'UserService' , '$rootScope', 'FlashService'];
-    function headerController($window,AuthenticationService, $location, $cookies,$scope,UserService,$rootScope, FlashService) {
+    function headerController($window,AuthenticationService, $location, $cookies,$scope,UserService,$rootScope, FlashService ) {
 
 
-  
-      function TestCtrl($scope) {
-    $scope.loading = true;
-    setTimeout(function () {
-        $scope.$apply(function(){
-            $scope.loading = false;
-        });
-    }, 1000);
-    }
+   // $scope.msg = true;
 
-    
-
-
+    // alert($rootScope.globals);
     setTimeout(function () {
         $scope.$apply(function () {
             $scope.msg = ( AuthenticationService.isLogged() );
@@ -31,7 +21,7 @@
    
 
         $scope.currentUser = function () {
-           return logged ? AuthenticationService.getUserInfo() : "";
+           return AuthenticationService.getUserInfo() ? AuthenticationService.getUserInfo() : "";
         }
 
       $scope.isActive = function(route) {
@@ -41,21 +31,19 @@
 
 
         $scope.logout = function () {
-                UserService.SignOutUser()
-                .then(function (response) {
+               // UserService.SignOutUser()
+               // .then(function (response) {
                     AuthenticationService.ClearCredentials();
-                    $location.path('/');
+                   // $location.path('/');
+                    window.location.replace('#!/login');
                     
-                });
+                //});
 
             };
 
         $scope.isLogged =  function(){
 
-          if( !$rootScope.globals.currentUser )
-                return true ;
-            return false;
-
+            return AuthenticationService.isLogged(); 
         };
 
 

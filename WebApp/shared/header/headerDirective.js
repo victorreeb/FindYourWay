@@ -11,7 +11,7 @@ angular.module("app").directive("ianHeader", function() {
     link: function($scope) {
 
      $scope.$watch('name', function() {
-        alert($scope.name);
+       // alert($scope.name);
      });
    }
 

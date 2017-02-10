@@ -20,11 +20,10 @@
                     if (response.success) {
                         FlashService.Success('Registration successful',true);
                         vm.dataLoading = false;
-                        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess)
-                        $location.path('/login');
+                        $location.path('/');
                     } else {
                         FlashService.Error(response.message);
-                        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess)
+                        //$rootScope.$broadcast(AUTH_EVENTS.loginSuccess)
                         vm.dataLoading = false;
                     }
                 });

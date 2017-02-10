@@ -9,50 +9,72 @@
     function AuthenticationService($http, $cookies, $rootScope, $timeout, UserService) {
         var service = {};
 
+
+        console.log($rootScope.globals);
+
+
         service.Login = Login;
+        service.Logout = Logout;
         service.SetCredentials = SetCredentials;
         service.ClearCredentials = ClearCredentials;
-
+        service.getUserInfo = getUserInfo;
+        service.isLogged = isLogged;
+        //service.stateLogin = stateLogin;
         return service;
 
-        function Login(username, password, callback) {
 
-            /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------*/
-            $timeout(function () {
-                var response;
-                UserService.GetByUsername(username)
-                    .then(function (user) {
-                        if (user !== null && user.password === password) {
-                            response = { success: true };
-                        } else {
-                            response = { success: false, message: 'Username or password is incorrect' };
-                        }
-                        callback(response);
-                    });
-            }, 1000);
+       // var isAuthenticated = false;
 
-            /* Use this for real authentication
-             ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
+        /* var auth = function (state) {
+        if (typeof state !== 'undefined') { isAuthenticated = state; }
+            return isAuthenticated;
+        };
 
+    */
+
+
+        function Logout()
+        {
+            UserService.SignOutUser();
+            $rootScope.globals = {};
+            $cookies.remove('globals');
+            //ClearCredentials();
         }
 
-        function SetCredentials(username, password) {
-            var authdata = Base64.encode(username + ':' + password);
+
+        function Login(user, callback) {
+
+           $timeout(function () {
+                var res;
+                UserService.GetUser(user)
+                    .then(function (response) {
+
+                    if (response.success) {
+
+                        res = { success: true , message : response.message};
+                    } else {
+                        res = { success: false, message: 'Username or password is incorrect' };
+                    }
+                        callback(res);
+                    });
+            }, 500);
+
+       }
+
+
+        function SetCredentials(email,token) {
+
+//      var authdata = Base64.encode(username + ':' + password);
 
             $rootScope.globals = {
                 currentUser: {
-                    username: username,
-                    authdata: authdata
+                    email: email,
+                    token: token
                 }
             };
 
             // set default auth header for http requests
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+          //  $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
 
             // store user details in globals cookie that keeps user logged in for 1 week (or until they logout)
             var cookieExp = new Date();
@@ -63,90 +85,30 @@
         function ClearCredentials() {
             $rootScope.globals = {};
             $cookies.remove('globals');
-            $http.defaults.headers.common.Authorization = 'Basic';
+          //  $http.defaults.headers.common.Authorization = 'Basic';
         }
-    }
 
-    // Base64 encoding service used by AuthenticationService
-    var Base64 = {
 
-        keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
-
-        encode: function (input) {
-            var output = "";
-            var chr1, chr2, chr3 = "";
-            var enc1, enc2, enc3, enc4 = "";
-            var i = 0;
-
-            do {
-                chr1 = input.charCodeAt(i++);
-                chr2 = input.charCodeAt(i++);
-                chr3 = input.charCodeAt(i++);
-
-                enc1 = chr1 >> 2;
-                enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-                enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-                enc4 = chr3 & 63;
-
-                if (isNaN(chr2)) {
-                    enc3 = enc4 = 64;
-                } else if (isNaN(chr3)) {
-                    enc4 = 64;
-                }
-
-                output = output +
-                    this.keyStr.charAt(enc1) +
-                    this.keyStr.charAt(enc2) +
-                    this.keyStr.charAt(enc3) +
-                    this.keyStr.charAt(enc4);
-                chr1 = chr2 = chr3 = "";
-                enc1 = enc2 = enc3 = enc4 = "";
-            } while (i < input.length);
-
-            return output;
-        },
-
-        decode: function (input) {
-            var output = "";
-            var chr1, chr2, chr3 = "";
-            var enc1, enc2, enc3, enc4 = "";
-            var i = 0;
-
-            // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-            var base64test = /[^A-Za-z0-9\+\/\=]/g;
-            if (base64test.exec(input)) {
-                window.alert("There were invalid base64 characters in the input text.\n" +
-                    "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
-                    "Expect errors in decoding.");
+        function isLogged()
+        {
+            if ($cookies.get('globals')) {
+               return true ;
             }
-            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+            return  false;
 
-            do {
-                enc1 = this.keyStr.indexOf(input.charAt(i++));
-                enc2 = this.keyStr.indexOf(input.charAt(i++));
-                enc3 = this.keyStr.indexOf(input.charAt(i++));
-                enc4 = this.keyStr.indexOf(input.charAt(i++));
-
-                chr1 = (enc1 << 2) | (enc2 >> 4);
-                chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-                chr3 = ((enc3 & 3) << 6) | enc4;
-
-                output = output + String.fromCharCode(chr1);
-
-                if (enc3 != 64) {
-                    output = output + String.fromCharCode(chr2);
-                }
-                if (enc4 != 64) {
-                    output = output + String.fromCharCode(chr3);
-                }
-
-                chr1 = chr2 = chr3 = "";
-                enc1 = enc2 = enc3 = enc4 = "";
-
-            } while (i < input.length);
-
-            return output;
         }
+
+        function getUserInfo()
+        {
+
+           // $rootScope.globals = $cookies.get('globals') || {};
+            if ($cookies.get('globals')) {
+               return $rootScope.globals.currentUser.email ;
+            }
+            return  "";
+        }
+    
+
     };
 
 })();
