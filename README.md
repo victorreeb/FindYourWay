@@ -74,15 +74,17 @@ POST /api/parties/destination
 | :----------- | :------: | ------------: |
 | PostPartie(nom, description) | --> | Créer Partie + Token |
 | Token | <-- | Renvoie un Token |
-| ... | ... | ... |										Test
-| GetPoint(Token) | --> | Récupère le point 1|
-| Appellation 1 | <-- | Renvoie l'appellation du point |
+| ... | ... | ... |										
+| GetPoint(Token) | --> | Récupère le point i|
+| Appellation i | <-- | Renvoie l'appellation du point |
 | PostPoint(token, lat, lng) | --> | Récupère et vérifie les coordonnées(lat, lng) |
 | Indice | <-- | Renvoie l'indice de la destination, null si incorrecte  |
 | ... | ... | ... |
 | PostDestination(lat, lng) | --> | Récupère et vérifie les coordonnées de la destination |
 | Score | <-- | Renvoie un score |
 
+<br/> i : indice d'itération
+<br/>Le bloque entre les ... est répéter 5 fois qui correspond au placement des 5 points sur la carte et le 6ème étant la destination
 
 
 
