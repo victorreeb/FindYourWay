@@ -5,7 +5,7 @@
         .module('app', ['ngRoute', 'ngCookies','ngSanitize'])
         .config(config)
         .run(run)
-        .constant('API_END_POINT','http://127.0.0.1:8080/findYourWay');
+        .constant('API_END_POINT','http://127.0.0.1:8080/findYourWay/api');
 
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
@@ -61,8 +61,10 @@
         //
         // $http.defaults.headers.common["Access-Control-Allow-Origin"] =  "*";
         //
+        //
+
         $http.defaults.headers.common['Accept'] = "application/json";
-        $http.defaults.headers.common['Content-Type'] = "application/json";
+        //$http.defaults.headers.common['Content-Type'] = "application/json";
 
 
         // keep user logged in after page refresh

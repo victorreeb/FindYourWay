@@ -5,10 +5,11 @@
         .module('app')
         .factory('UserService', UserService);
 
-    UserService.$inject = ['$http','$rootScope'];
-    function UserService($http,$rootScope) {
+    UserService.$inject = ['$http','$rootScope','API_END_POINT'];
+    function UserService($http,$rootScope,API_END_POINT) {
 
-
+        var url_api = API_END_POINT;
+        //alert(API_END_POINT);
         var service = {};
 
         service.GetAll = GetAll;
@@ -36,7 +37,7 @@
         }
 
         function Create(user) {
-            return $http.post('http://localhost:8080/restsandwich/api/utilisateur/', user).then(handleSuccess, handleError('Error creating user'));
+            return $http.post( API_END_POINT + '/utilisateur', user).then(handleSuccess, handleError('Error creating user'));
         }
 
         function GetUser(user) {
