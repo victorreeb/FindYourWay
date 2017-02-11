@@ -5,7 +5,7 @@
 ###Docker
 Recupérer les 3 fichiers :
 (Dockerfile, docker-entrypoint.sh postgresql-9.4.1212.jar)
-<br/>  • <!-- docker build -t postgres . -->
+<br/>  • docker build -t postgres . 
 <br/>  • docker start bd-postgres
 
 ###Postgres
@@ -70,10 +70,18 @@ POST /api/parties/destination
 ##Déroulement
 
 
-| Col1 | Col2 | Col3 |
+| Client | ___ | Serveur |
 | :----------- | :------: | ------------: |
-| Alignement Gauche | Centé | Alignement Droite |
-| bla | bla | bla |
+| PostPartie(nom, description) | --> | Créer Partie + Token |
+| Token | <-- | Renvoie un Token |
+| GetPoint(Token) | --> | Récupère le point 1|
+| Appellation 1 | <-- | Renvoie l'appellation du point |
+| PostPoint(token, lat, lng) | --> | Récupère et vérifie les coordonnées(lat, lng) |
+| Indice | <-- | Renvoie l'indice de la destination, null si incorrecte  |
+| ... | ... | ... |
+| PostDestination(lat, lng) | --> | Récupère et vérifie les coordonnées de la destination |
+| Score | <-- | Renvoie un score |
+
 
 
 
