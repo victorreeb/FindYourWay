@@ -16,7 +16,7 @@ Run la BD-Postgres:
 <br/>  • docker run -it --rm --link bd-postgres:postgres postgres psql -h bd-postgres -U postgres
 
 Import de la BD postgres:
-<br/>  • psql -U postgres bd-postgres < dbexport.pgsql
+<br/>  • psql -U postgres bd-postgres < database.sql
 
 ###Wildfly
 Ajoute du Driver postgresql au Serveur Wildfly:
