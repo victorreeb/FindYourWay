@@ -10,9 +10,6 @@
         var service = {};
 
 
-        
-
-
         service.Login = Login;
         service.Logout = Logout;
         service.SetCredentials = SetCredentials;
@@ -73,7 +70,6 @@
         function ClearCredentials() {
             $rootScope.globals = {};
             $cookies.remove('globals');
-          //  $http.defaults.headers.common.Authorization = 'Basic';
         }
 
 
@@ -89,7 +85,6 @@
         function getUserInfo()
         {
 
-           // $rootScope.globals = $cookies.get('globals') || {};
             if ($cookies.get('globals')) {
                return $rootScope.globals.currentUser.email ;
             }

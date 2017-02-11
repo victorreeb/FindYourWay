@@ -27,38 +27,101 @@
         }
 
         function play(){
+
           var max_points = 5;
+
+
           if(vm.iteration > 0 && vm.iteration < max_points){
-            vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng));
-            refreshIndice();
-            vm.appellation = MapService.getPoint();
+
+            MapService.postPoint(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng)
+            .then(function(response){
+                
+               vm.indices.push(response.message.indice);
+                refreshIndice();
+
+            })
+
+            .then(function(response){
+              
+              MapService.getPoint().then(function(response){
+              console.log(response);
+              vm.appellation = response.message.appellation;
+            })});
+
+           
+           // refreshIndice();
+            //vm.appellation = MapService.getPoint();
+           // refreshAppellation(vm.iteration+1);
+          }
+
+
+          else if(vm.iteration === 5)
+          {
+
             refreshAppellation(vm.iteration+1);
+
+             MapService.postPoint(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng)
+            .then(function(response){
+                
+               vm.indices.push(response.message.indice);
+                refreshIndice();
+                vm.appellation = "" ;
+
+            })
           }
-          else if(vm.iteration === 5){
-            refreshAppellation(vm.iteration+1);
-            vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng));
-            refreshIndice();
-            vm.appellation = '';
-          }
-          else if(vm.iteration === 6){
-            vm.score = MapService.postDestination(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng);
-            vm.map.off('click');
-            refreshScore();
-          }
+
+
+          //  vm.indices.push(MapService.postPoint(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng));
+           // refreshIndice();
+           // vm.appellation = '';
+
+          else if(vm.iteration === 6)
+          {
+
+             MapService.postDestination(vm.markers[vm.iteration-1]._latlng.lat, vm.markers[vm.iteration-1]._latlng.lng)
+            .then(function(response){
+                
+               vm.indices.push(response.message.indice);
+                refreshIndice();
+                vm.appellation = "" ;
+                vm.map.off('click');
+                refreshScore();
+
+            })
+
+
+           // vm.score = 
+            //vm.map.off('click');
+           // refreshScore();
+          };
         }
 
         function initMap(){
           //ajouter les params des champs lors de la création d'une partie
 
             MapService.postPartie(vm.partie.nom, vm.partie.description).then(function(response){
-              console.log(response.message.token);
               TokenService.addHeader(response.message.token);
+              TokenService.setToken(response.message.token);
+              vm.token = TokenService.getToken();
+              console.log(vm.token);
+            })
+
+            .then(function(response){
+              
+              MapService.getPoint().then(function(response){
+              console.log(response);
+              vm.appellation = response.message.appellation;
             });
 
-          vm.appellation = MapService.getPoint();
+            });
+
+
+          //vm.appellation = MapService.getPoint();
           refreshAppellation(vm.iteration);
           vm.map = L.map('mapid').setView([48.866, 2.333], 5);
           L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(vm.map);
+
+
 
 
              /**

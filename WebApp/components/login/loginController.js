@@ -9,6 +9,7 @@
     function LoginController($window,$rootScope,$location, AuthenticationService, FlashService,$route) {
         var vm = this;
 
+
         vm.login = login;
 
         (function initController() {
@@ -24,7 +25,6 @@
                     FlashService.Success('Bienvenue ' + response.message.email , true);
                     $location.path('/');
                     $route.reload();
-                    //$location.path('/');
                 } else {
 
                     FlashService.Error(response.message);
