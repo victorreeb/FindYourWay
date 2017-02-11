@@ -8,10 +8,6 @@
     headerController.$inject = ['$window','AuthenticationService', '$location','$cookies', '$scope' , 'UserService' , '$rootScope', 'FlashService'];
     function headerController($window,AuthenticationService, $location, $cookies,$scope,UserService,$rootScope, FlashService ) {
 
-
-   // $scope.msg = true;
-
-    // alert($rootScope.globals);
     setTimeout(function () {
         $scope.$apply(function () {
             $scope.msg = ( AuthenticationService.isLogged() );
@@ -31,14 +27,10 @@
 
 
         $scope.logout = function () {
-               // UserService.SignOutUser()
-               // .then(function (response) {
+             
                     AuthenticationService.ClearCredentials();
-                   // $location.path('/');
-                    window.location.replace('#!/login');
+                    $location.path('/login');
                     
-                //});
-
             };
 
         $scope.isLogged =  function(){

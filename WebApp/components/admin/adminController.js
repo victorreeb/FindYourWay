@@ -18,7 +18,7 @@
           AdminService.CreerPoint(vm.point_latitude, vm.point_longitude, vm.point_appellation).then(function(response){
             if (response.success) {
                 console.log(response.message);
-                FlashService.Success('Add Point successful', true);
+                FlashService.Success('Add Point successful');
                 $location.path('/admin');
             } else {
               FlashService.Error(response.message);
@@ -41,7 +41,7 @@
           AdminService.CreerDestination(vm.dest_latitude, vm.dest_longitude, vm.dest_description, vm.dest_lieu).then(function(response) {
             if (response.success) {
                 console.log(response.message);
-                FlashService.Success('Add destination successful', true);
+                FlashService.Success('Add destination successful');
                 $location.path('/admin');
             } else {
               FlashService.Error(response.message);

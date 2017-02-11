@@ -23,7 +23,6 @@
                         $location.path('/');
                     } else {
                         FlashService.Error(response.message);
-                        //$rootScope.$broadcast(AUTH_EVENTS.loginSuccess)
                         vm.dataLoading = false;
                     }
                 });
