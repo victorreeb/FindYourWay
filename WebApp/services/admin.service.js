@@ -20,13 +20,14 @@
         return service;
 
         function GetAllPoint() {
-          return $http.get('http://127.0.0.1:8080/findYourWay/api/privee/points').then(handleSuccess, handleError('Error getting all users'));
+          return $http.get('http://127.0.0.1:8080/findYourWay/api/privee/points').then(handleSuccess, handleError('Error getting all Points'));
         }
 
         function GetAllDestination() {
-          return $http.get('http://127.0.0.1:8080/findYourWay/api/privee/destinations').then(handleSuccess, handleError('Error getting all users'));
+          return $http.get('http://127.0.0.1:8080/findYourWay/api/privee/destinations').then(handleSuccess, handleError('Error getting all Destinations'));
         }
 
+        
         function CreerPoint(lati, lngt, appellations) {
             return $http.post('http://127.0.0.1:8080/findYourWay/api/privee/points', {"lat": lati, "lng": lngt, "appellation": appellations}).then(handleSuccess, handleError('Error creating point'));
         }
