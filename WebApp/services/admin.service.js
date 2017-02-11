@@ -20,13 +20,14 @@
         return service;
 
         function GetAllPoint() {
+
           return $http.get( API_END_POINT + '/privee/points').then(handleSuccess, handleError('Error getting all users'));
         }
 
         function GetAllDestination() {
           return $http.get(API_END_POINT + '/privee/destinations').then(handleSuccess, handleError('Error getting all users'));
         }
-
+        
         function CreerPoint(lati, lngt, appellations) {
             return $http.post(API_END_POINT + '/privee/points', {"lat": lati, "lng": lngt, "appellation": appellations}).then(handleSuccess, handleError('Error creating point'));
         }
