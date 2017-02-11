@@ -73,6 +73,7 @@ public class PartieRepresentation {
     @POST
     public Response addPartie(Partie partie, @Context UriInfo uriInfo) {
         currentPartie=null;
+        this.etape = 0;
         List<Point> points = this.ptResource.findAdminAll();
         List<Destination> destinations = this.destResource.findAdminAll();
         Collections.shuffle(points);
@@ -140,9 +141,9 @@ public class PartieRepresentation {
     @GET 
     @Path("/point")
     public Response getPoint( @Context UriInfo uriInfo) {
-        String  appellation="no indice found";
+        String  appellation="no appelation found";
        this.currentPartie = this.partResource.findById(this.identifiant);
-       if(!this.currentPartie.getPoints().isEmpty() && (this.etape>=0 && this.etape<=5)) {
+       if(!this.currentPartie.getPoints().isEmpty() && (this.etape>=0 && this.etape<=this.currentPartie.getPoints().size())) {
        appellation = this.currentPartie.getPoints().get(this.etape).getAppellation();
        System.out.println("apppelation 1 ="+appellation);
        }
@@ -159,11 +160,15 @@ public class PartieRepresentation {
      public  Response sendPoint(Point point, @Context UriInfo uriInfo) {
        
        String indice=" no indice found";
-       if(!this.currentPartie.getPoints().isEmpty() && (this.etape>=0 && this.etape<=5)) {
+       System.out.println("etape >>>>>> "+this.etape);
+        System.out.println("taille >>>>>> "+this.currentPartie.getPoints().size());
+       this.currentPartie = this.partResource.findById(this.identifiant);
+       if(!this.currentPartie.getPoints().isEmpty() && (this.etape>=0 && this.etape<=this.currentPartie.getPoints().size())) {
             if(this.verifierPoint(point.getLat(), point.getLng())) {
                 indice=  this.currentPartie.getDestination().get(0).getIndices().get(this.etape);
-                this.etape++;
+                
              }
+            this.etape++;
        }
        System.out.println("indice="+indice);
        JsonObject jsonResult = Json.createObjectBuilder().add("indice",  indice).build();
@@ -260,15 +265,12 @@ public class PartieRepresentation {
     }
     
     
-    private boolean verifierPoint(double lat, double lng){
+   private boolean verifierPoint(double lat, double lng){
         
-        boolean res=false;
-        
-        if(this.currentPartie.getPoints().get(this.etape).getLat()==lat && this.currentPartie.getPoints().get(this.etape).getLng()==lng){
-            
+        boolean res=false;       
+        if(distance(this.currentPartie.getPoints().get(this.getEtape()).getLat(),this.currentPartie.getPoints().get(getEtape()).getLng(),lat,lng,"K")<=getTolerance()) {
             res =true;
         }
-        
         
         
         return res;
@@ -392,7 +394,7 @@ public class PartieRepresentation {
     }
 
     public int getEtape() {
-        return etape;
+        return this.etape;
     }
 
     public void setEtape(int etape) {
