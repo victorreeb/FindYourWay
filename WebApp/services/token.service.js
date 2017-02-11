@@ -8,6 +8,8 @@
     TokenService.$inject = ['$http', '$rootScope'];
     function TokenService($http, $rootScope) {
 
+        this.token = '';
+
         var service = {};
 
         service.addHeader = addHeader;
@@ -17,14 +19,13 @@
 
         return service;
 
-        this.token = '';
+
 
         /**
         * ajoute le token au header
         */
         function addHeader(ptoken){
-          $http.defaults.headers.common['Authorization'] = ptoken;
-          console.log($http.defaults.headers.common['Authorization']);
+          $http.defaults.headers.common['Authorization'] = 'Bearer ' + ptoken;
         }
 
         function setToken(t) {

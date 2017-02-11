@@ -10,7 +10,7 @@
         var service = {};
 
 
-        console.log($rootScope.globals);
+        
 
 
         service.Login = Login;
@@ -19,18 +19,9 @@
         service.ClearCredentials = ClearCredentials;
         service.getUserInfo = getUserInfo;
         service.isLogged = isLogged;
-        //service.stateLogin = stateLogin;
+
+
         return service;
-
-
-       // var isAuthenticated = false;
-
-        /* var auth = function (state) {
-        if (typeof state !== 'undefined') { isAuthenticated = state; }
-            return isAuthenticated;
-        };
-
-    */
 
 
         function Logout()
@@ -38,7 +29,6 @@
             UserService.SignOutUser();
             $rootScope.globals = {};
             $cookies.remove('globals');
-            //ClearCredentials();
         }
 
 
@@ -64,7 +54,7 @@
 
         function SetCredentials(email,token) {
 
-//      var authdata = Base64.encode(username + ':' + password);
+            //var authdata = Base64.encode(username + ':' + password);
 
             $rootScope.globals = {
                 currentUser: {
@@ -73,8 +63,6 @@
                 }
             };
 
-            // set default auth header for http requests
-          //  $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
 
             // store user details in globals cookie that keeps user logged in for 1 week (or until they logout)
             var cookieExp = new Date();
@@ -107,7 +95,7 @@
             }
             return  "";
         }
-    
+
 
     };
 

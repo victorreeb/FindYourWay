@@ -97,7 +97,9 @@ public class PartieRepresentation {
         System.out.println("token =="+this.token);
         URI uri = uriInfo.getAbsolutePathBuilder().path(partie.getId().toString())                
                 .build();
+
        JsonObject jsonResult = Json.createObjectBuilder().add("token",  this.token ).build();
+
             
         return Response.ok().entity(jsonResult).build();
     }

@@ -2,10 +2,10 @@
   //  'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies'])
+        .module('app', ['ngRoute', 'ngCookies','ngSanitize'])
         .config(config)
-        .run(run);
-        // .constant('API_END_POINT','http://localhost/FindYourWay/WebApp');
+        .run(run)
+        .constant('API_END_POINT','http://127.0.0.1:8080/findYourWay');
 
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
@@ -51,13 +51,16 @@
         function run($rootScope, $location, $http,$cookies) {
 
 
-        if(  $rootScope[''] = $http.defaults.headers.common['Authorization']  )
+        // if(  $rootScope[''] = $http.defaults.headers.common['Authorization']  )
 
 
       //  $http.defaults.headers.common['Authorization'] = "Bearer  " + ;
        // $http.defaults.headers.common["Access-Control-Allow-Headers"] =  "Origin, X-Requested-With, Content-Type, Accept";
-        $http.defaults.headers.common["Access-Control-Allow-Origin"] =  "*";
 
+
+        //
+        // $http.defaults.headers.common["Access-Control-Allow-Origin"] =  "*";
+        //
         $http.defaults.headers.common['Accept'] = "application/json";
         $http.defaults.headers.common['Content-Type'] = "application/json";
 

@@ -9,6 +9,8 @@
     function MapService($http, $rootScope) {
         var service = {};
 
+
+
         service.postPartie = postPartie;
         service.getPoint = getPoint;
         service.postPoint = postPoint;
@@ -19,8 +21,8 @@
         /**
         * récupère token
         */
-        function postPartie(nom, description){
-          return $http.post('/findyourway/api/parties', {nom: nom, description: description}).then(handleSuccess, handleError('Error get Partie'));
+        function postPartie(pnom, pdescription){
+          return $http.post('http://127.0.0.1:8080/findYourWay/api/parties', {"nom": pnom, "description": pdescription}).then(handleSuccess, handleError('Error get Partie'));
 
         }
 
@@ -28,28 +30,28 @@
         * récupère appellation
         */
         function getPoint(){
-          return $http.get(':8080/findyourway/api/parties/point').then(handleSuccess, handleError('Error get Point'));
+          return $http.get('http://127.0.0.1:8080/findYourWay/api/parties/point').then(handleSuccess, handleError('Error get Point'));
         }
 
         /**
         * recupère un indice final
         */
-        function postPoint(lat, lng){
-          return $http.post('/findyourway/api/parties/point', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Point'));
+        function postPoint(lati, Dlng){
+          return $http.post('http://127.0.0.1:8080/findYourWay/api/parties/points', {"lat": lati, "lng": Dlng}).then(handleSuccess, handleError('Error post Point'));
         }
 
         /**
         * récupère score
         */
-        function postDestination(lat, lng){
-          return $http.post('/findyourway/api/parties/destination', {latitude: lat, longitude: lng}).then(handleSuccess, handleError('Error post Destination'));
+        function postDestination(lati, Dlng){
+          return $http.post('http://127.0.0.1:8080/findYourWay/api/parties/destination', {"lat": lati, "lng": Dlng}).then(handleSuccess, handleError('Error post Destination'));
 
         }
 
         // private functions
 
         function handleSuccess(res) {
-            return res.data;
+            return { success: true, message: res.data, headers_content: res.headers()['Authorization'] };
         }
 
         function handleError(error) {
