@@ -50,9 +50,10 @@ public class Point implements Serializable {
     private double lat;
     private double lng;
     private String appellation;
-    @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.EAGER) // va se référer à u message  qui correspond à mapBy
+    @ManyToOne // va se référer à u message  qui correspond à mapBy
     @JsonBackReference //cassser le cycle   
     private Partie partie;
+    
        
     
     @XmlElement(name="_links")

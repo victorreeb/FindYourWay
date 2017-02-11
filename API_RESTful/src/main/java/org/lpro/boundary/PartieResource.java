@@ -8,6 +8,7 @@ package org.lpro.boundary;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
@@ -27,7 +28,10 @@ public class PartieResource {
     @PersistenceContext
     EntityManager em;
     
-    
+    @EJB // @Inject pareil, pour l'injection de dépendance
+    PointResource ptResource;
+    @EJB
+    DestinationResource destResource;
     
     public Partie findById(String id) {
         return this.em.find(Partie.class, id);
@@ -41,11 +45,14 @@ public class PartieResource {
     }
 
     public Partie save(Partie partie) {
-        partie.setId(UUID.randomUUID().toString());
-        partie.setPoints(partie.getPoints());
-        partie.setDestination(partie.getDestination());
         
-        return this.em.merge(partie);
+        partie.setId(UUID.randomUUID().toString());
+        partie.setPoints(new ArrayList<>());
+        
+        partie.setDestination(new ArrayList<>());
+        
+      return   this.em.merge(partie);
+        
     }
 
     public void delete(String id) {

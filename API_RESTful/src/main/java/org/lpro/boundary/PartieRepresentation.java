@@ -47,10 +47,12 @@ import provider.Secured;
 @Produces(MediaType.APPLICATION_JSON)
 @Stateless
 public class PartieRepresentation {
-    Partie currentPartie;
+    Partie currentPartie;    
     String token;
+    String identifiant;
+    private double tolerance = 50;
+    private int score=0;
     int etape=0;
-    double tolerance = 50;
     @Inject
     private KeyManagement keyManagement;
      @Inject
@@ -78,19 +80,22 @@ public class PartieRepresentation {
         Partie newPartie  = new Partie();
         Destination destination = new Destination();
         destination = destinations.get(0);
-        //newPartie = partie;
-        newPartie.setNom(partie.getNom());
-         newPartie.setDescription(partie.getDescription());
-        System.out.println("points  ="+points.toString());
-        System.out.println("points  ="+destination.getLat());
-        newPartie.setPoints(points);
-        newPartie.setDestination(destinations);
-        this.destResource.ajouteDestination(newPartie.getId(), destination);
-         this.currentPartie = this.partResource.save(newPartie);
-         
+        partie = this.partResource.save(partie);
+        for(Point pt : points ) {
+            this.ptResource.ajoutePoint(partie.getId(), pt);
+               
+            }
+        for(Destination d : destinations ) {
+            
+            this.destResource.ajouteDestination(partie.getId(),d);
+               
+            }         
+        System.out.println("id de la partie >>>>>"+partie.getId());
+        
+        this.identifiant = partie.getId();
         this.token = issueToken(newPartie.getId());
         System.out.println("token =="+this.token);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(newPartie.getId().toString())                
+        URI uri = uriInfo.getAbsolutePathBuilder().path(partie.getId().toString())                
                 .build();
         JsonObject jsonResult = Json.createObjectBuilder().add("token",  this.token ).build();
             
@@ -133,7 +138,7 @@ public class PartieRepresentation {
     @GET 
     @Path("/point")
     public Response getPoint( @Context UriInfo uriInfo) {
-    
+       this.currentPartie = this.partResource.findById(this.identifiant);
        String  appellation = this.currentPartie.getPoints().get(this.etape).getAppellation();
        System.out.println("apppelation 1 ="+appellation);
         JsonObject jsonResult = Json.createObjectBuilder().add("appellation",  appellation ).build();
@@ -166,46 +171,16 @@ public class PartieRepresentation {
        int score = 0;
        
        if(this.verifieDestination(point.getLat(), point.getLng()) && this.etape == 5) {
-         score =10;
+         score = this.attribuerScore(point.getLat(), point.getLng());
        }
        System.out.println("indice="+score);
        JsonObject jsonResult = Json.createObjectBuilder().add("score",  score).build();
             
         return Response.ok().entity(jsonResult).build();
    } 
-     
-   /* 
-    @GET
-    @Path("/{partieId}")
-    public Response getPartie(@PathParam("partieId") String partieId, @Context UriInfo uriInfo) {
-        Partie partie = this.partResource.findById(partieId);
-         Destination dest = this.destResource.findOneDestination(partie.getId());
-        if (partie != null) {
             
-            partie.getLinks().clear();
-            partie.addLink(this.getUriForSelfPartie(uriInfo, partie),"self");
-            List<Point> lp = this.ptResource.findAll(partieId);
-            
-            for(Point p : lp) {
-                
-                p.getLinks().clear();
-                
-                p.addLink(this.getUriForSelfPoint(uriInfo, p, partie), "self");
-                
-            }
-            partie.setPoints(lp);
-            partie.setDestination(dest);
-            return Response.ok(partie).build();
-        } else {
-            
-            //pas besoin de lien 
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-    }*/
-
     
-    
-    //pour un message particulier
+    //pour une partie particulière 
     private String getUriForSelfPartie(UriInfo uriInfo, Partie partie) {
         
         
@@ -218,7 +193,7 @@ public class PartieRepresentation {
                 
     }
     
-    // pour la collection de messages
+    // pour la collection de parties
     private String getUriForPartie(UriInfo uriInfo) {
         
         String uri = uriInfo.getBaseUriBuilder()
@@ -230,7 +205,7 @@ public class PartieRepresentation {
         
     }
     
-    // pour un commentaire d'un message 
+    // pour un point d'une partie
     private String getUriForSelfPoint(UriInfo uriInfo, Point pt, Partie partie) {
         
         
@@ -260,7 +235,7 @@ public class PartieRepresentation {
         return uri;
         
     }
-    //pour la collection de commentaires d'un message 
+    //pour la collection de points d'une partie 
     
     private String getUriForPoints(UriInfo uriInfo, Partie partie) {
         
@@ -281,30 +256,22 @@ public class PartieRepresentation {
     private boolean verifierPoint(double lat, double lng){
         
         boolean res=false;
-        /*
+        
         if(this.currentPartie.getPoints().get(this.etape).getLat()==lat && this.currentPartie.getPoints().get(this.etape).getLng()==lng){
             
-            res =true;
-        }*/
-        if(distance(this.currentPartie.getPoints().get(this.etape).getLat(),this.currentPartie.getPoints().get(this.etape).getLng(),lat,lng,"K")<=this.tolerance) {
             res =true;
         }
         
         
+        
         return res;
     }
+      
     
     
-    
-    private boolean verifieDestination(double lat, double lng){
+     private boolean verifieDestination(double lat, double lng){
         
-        boolean res=false;
-        /*
-        if((this.currentPartie.getDestination().get(0).getLat())==lat && (this.currentPartie.getDestination().get(0).getLng())==lng ){
-            
-            res = true;
-        }*/
-        
+        boolean res=false;               
         if(distance(this.currentPartie.getDestination().get(0).getLat(),this.currentPartie.getDestination().get(0).getLng(),lat,lng,"K")<=this.tolerance) {
             
             res = true;
@@ -336,6 +303,30 @@ public class PartieRepresentation {
 		return (rad * 180 / Math.PI);
 	}
 
+    
+    
+    
+    
+    private int attribuerScore(double lat1, double lon1) {
+       
+        
+        double res = distance(lat1,lon1,this.currentPartie.getDestination().get(0).getLat(),this.currentPartie.getDestination().get(0).getLng(),"K");
+        
+            if(res < this.tolerance) {this.score = 10;}        
+                else if (res < (2*this.tolerance ))  {  this.score = 8; }        
+                else if (res < (3*this.tolerance ))  {  this.score = 6; }
+                else if(res < (5*this.tolerance  ))  {  this.score = 3; }
+                else if(res < (10*this.tolerance ))  {  this.score = 1; }
+        
+        
+        
+        return this.score;
+    }
+    
+    
+    
+    
+
     private String issueToken(String commandeId) {
         Key key = keyManagement.generateKey();
         String jwtToken = Jwts.builder()
@@ -352,6 +343,54 @@ public class PartieRepresentation {
     private Date toDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     } 
+
+    public Partie getCurrentPartie() {
+        return currentPartie;
+    }
+
+    public void setCurrentPartie(Partie currentPartie) {
+        this.currentPartie = currentPartie;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getIdentifiant() {
+        return identifiant;
+    }
+
+    public void setIdentifiant(String identifiant) {
+        this.identifiant = identifiant;
+    }
+
+    public double getTolerance() {
+        return tolerance;
+    }
+
+    public void setTolerance(double tolerance) {
+        this.tolerance = tolerance;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getEtape() {
+        return etape;
+    }
+
+    public void setEtape(int etape) {
+        this.etape = etape;
+    }
     
     
     

@@ -52,13 +52,13 @@ public class Partie implements Serializable {
     private String id;
     
     private String nom;
-    private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partie")  // une instance de la classe message correspond plusieurs instance de commentaires 
-    @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+    private String description;   
+     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partie")  // une instance de la classe message correspond plusieurs instance de commentaires 
+     @JsonManagedReference //le point d'entrée  (pour eviter le cycle)
+     private List<Point> points; //
+    
    
-   // @ManyToMany(cascade = CascadeType.ALL)  // une instance de la classe message correspond plusieurs instance de commentaires 
-   
-    private List<Point> points; //collection
+    
     
     @ManyToOne // va se référer à u message  qui correspond à mapBy
     @JsonBackReference //cassser le cycle   
@@ -67,7 +67,7 @@ public class Partie implements Serializable {
     
     
    
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "partie")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "partie",fetch=FetchType.EAGER)
    private List <Destination> destination;
     
      @XmlElement(name="_links")
@@ -88,14 +88,15 @@ public class Partie implements Serializable {
     
      public Partie() { //tjrs un constructeur vide pour JPA
         this.points = new ArrayList<>();
+        this.destination = new ArrayList<>();
     }
 
-    public Partie(String id, String nom, String description,List<Destination> destination) {
-        this.id = id; 
+    public Partie(String nom, String description) {
+        
         this.nom = nom;
         this.description = description;
         this.points = new ArrayList<>();
-        this.destination = destination;
+        this.destination = new ArrayList<>();
     }
     
     public String getId() {
