@@ -268,7 +268,7 @@ public class PartieRepresentation {
    private boolean verifierPoint(double lat, double lng){
         
         boolean res=false;       
-        if(distance(this.currentPartie.getPoints().get(this.getEtape()).getLat(),this.currentPartie.getPoints().get(getEtape()).getLng(),lat,lng,"K")<=getTolerance()) {
+        if(distance(this.currentPartie.getPoints().get(this.getEtape()).getLat(),this.currentPartie.getPoints().get(this.getEtape()).getLng(),lat,lng,"K")<=this.getTolerance()) {
             res =true;
         }
         
