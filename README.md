@@ -70,10 +70,11 @@ POST /api/parties/destination
 ##Déroulement
 
 
-| Client | ___ | Serveur |
+| Client |  | Serveur |
 | :----------- | :------: | ------------: |
 | PostPartie(nom, description) | --> | Créer Partie + Token |
 | Token | <-- | Renvoie un Token |
+| ... | ... | ... |										Test
 | GetPoint(Token) | --> | Récupère le point 1|
 | Appellation 1 | <-- | Renvoie l'appellation du point |
 | PostPoint(token, lat, lng) | --> | Récupère et vérifie les coordonnées(lat, lng) |
