@@ -1,11 +1,11 @@
 # Atelier2 - FindYourWay
 
-# Directives d'installation 
+## Directives d'installation 
 
 Docker :
 Recupérer les 3 fichiers :
 (Dockerfile, docker-entrypoint.sh postgresql-9.4.1212.jar)
-<br/>  • docker build -t postgres .
+<br/>  • <docker build -t postgres .>
 <br/>  • docker start bd-postgres
 
 Création d'un User pour Postgres:
@@ -30,11 +30,11 @@ Log pour postgres: name: postgres
 				   password: riovas 
 
 
-# API
+## API
 
-# BackEnd 
+### BackEnd 
 
-Admin
+####Admin
 
 POST /api/privee/points
 <br/>  • Description: Ajout d'un point
@@ -44,7 +44,7 @@ POST /api/privee/destinations
 <br/>  • Description: Ajout d'une destinations
 <br/>  • Params:  {"lat": ..., "lng": ..., "description": ..., "lieu": ...}
 
-Map
+####Map
 
 POST /api/parties
 <br/>  • Description: Créer une partie
