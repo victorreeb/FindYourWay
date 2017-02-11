@@ -35,8 +35,8 @@ public class PointResource {
     }
 
     public List<Point> findAll(String partieId) {
-        Query query = em.createQuery("SELECT p FROM Point p where p.id =:id");
-        query.setParameter("id", partieId);
+        Query query = em.createQuery("SELECT p FROM Point p where p.partie_id =:id");
+        query.setParameter("partie_id", partieId);
         List<Point> liste = query.getResultList();
         return liste;
     }
@@ -61,14 +61,13 @@ public class PointResource {
         return this.em.merge(p);
     }
 
-
-    public Point ajoutePoint(String partieId, Point point) {
-        Point p = new Point(point.getLat(),point.getLng(),point.getAppellation());
+   
+     public Point ajoutePoint(String partieId, Point point) {
+        Point p = new Point(point.getLat(), point.getLng(),point.getAppellation());
         p.setId(UUID.randomUUID().toString());
-        
+        p.setPartie(this.em.find(Partie.class, partieId));
         this.em.merge(p);
-
-      return p;
+        return p;
     }
  
     public Partie save(Partie partie) {
