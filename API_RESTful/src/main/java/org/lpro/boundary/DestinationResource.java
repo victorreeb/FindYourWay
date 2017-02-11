@@ -68,9 +68,9 @@ public class DestinationResource {
     public Destination ajouteDestination(String partieId, Destination destination) {
         Destination d = new Destination(destination.getLat(),destination.getLng(),destination.getLieu(),destination.getDescription(),destination.getIndices());
         d.setId(UUID.randomUUID().toString());
-        //d.setPartie(this.em.find(Partie.class, partieId));
-        this.em.merge(d);
-        return d;
+        d.setPartie(this.em.find(Partie.class, partieId));
+       return  this.em.merge(d);
+        
 
     }
 
