@@ -5,7 +5,7 @@
 Docker :
 Recupérer les 3 fichiers :
 (Dockerfile, docker-entrypoint.sh postgresql-9.4.1212.jar)
-<br/>  • <docker build -t postgres .>
+<br/>  • docker build -t postgres .
 <br/>  • docker start bd-postgres
 
 Création d'un User pour Postgres:
