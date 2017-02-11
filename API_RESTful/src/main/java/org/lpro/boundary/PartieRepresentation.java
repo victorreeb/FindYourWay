@@ -97,7 +97,9 @@ public class PartieRepresentation {
         System.out.println("token =="+this.token);
         URI uri = uriInfo.getAbsolutePathBuilder().path(partie.getId().toString())                
                 .build();
-        JsonObject jsonResult = Json.createObjectBuilder().add("token",  this.token ).build();
+
+       JsonObject jsonResult = Json.createObjectBuilder().add("token",  this.token ).build();
+
             
         return Response.ok().entity(jsonResult).build();
     }
@@ -138,9 +140,12 @@ public class PartieRepresentation {
     @GET 
     @Path("/point")
     public Response getPoint( @Context UriInfo uriInfo) {
+        String  appellation="no indice found";
        this.currentPartie = this.partResource.findById(this.identifiant);
-       String  appellation = this.currentPartie.getPoints().get(this.etape).getAppellation();
+       if(!this.currentPartie.getPoints().isEmpty() && (this.etape>=0 && this.etape<=5)) {
+       appellation = this.currentPartie.getPoints().get(this.etape).getAppellation();
        System.out.println("apppelation 1 ="+appellation);
+       }
         JsonObject jsonResult = Json.createObjectBuilder().add("appellation",  appellation ).build();
             
         return Response.ok().entity(jsonResult).build();
@@ -153,10 +158,12 @@ public class PartieRepresentation {
      @Path("/points")   
      public  Response sendPoint(Point point, @Context UriInfo uriInfo) {
        
-       String indice=null;
-       if(this.verifierPoint(point.getLat(), point.getLng())) {
-         indice=  this.currentPartie.getDestination().get(0).getIndices().get(this.etape);
-         this.etape++;
+       String indice=" no indice found";
+       if(!this.currentPartie.getPoints().isEmpty() && (this.etape>=0 && this.etape<=5)) {
+            if(this.verifierPoint(point.getLat(), point.getLng())) {
+                indice=  this.currentPartie.getDestination().get(0).getIndices().get(this.etape);
+                this.etape++;
+             }
        }
        System.out.println("indice="+indice);
        JsonObject jsonResult = Json.createObjectBuilder().add("indice",  indice).build();
