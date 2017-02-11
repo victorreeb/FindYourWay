@@ -1,4 +1,11 @@
+
+
+
+
+
+
 <div ng-show="!booleanMap" class="col-md-6 col-md-offset-3">
+
 
    <form name="form" ng-submit="vm.afficher_map()" role="form">
 
@@ -33,6 +40,8 @@
 <div ng-show="booleanMap">
 
 
+
+
 <div class="row">
   <div class="col-sm-6">
   
@@ -41,13 +50,25 @@
   </div>
   <div class="col-sm-6">
     <!-- appellation du point courant ici -->
-    <div class="appellation_container" ng-bind-html="vm.appellation_print"></div>
+    <div class="appellation_container">
+
+  
+      
+      <h4>Placer le point <span ng-bind="vm.iteration"></span> </h4>
+      <p>Question :  <span ng-bind="vm.appellation"></span> </p>
+
+    </div>
 
     <hr>
     <!-- indices ajoutés ici -->
     <div class="indice_container" ng-bind-html="vm.indices_print"></div>
 
   </div>
+
+
 </div>
+
+
+
 
 </div>
