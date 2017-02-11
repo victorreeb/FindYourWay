@@ -72,15 +72,15 @@ POST /api/parties/destination
 
 | Client |  | Serveur |
 | :----------- | :------: | ------------: |
-| PostPartie(nom, description) | --> | Créer Partie + Token |
+| /api/parties | --> | Créer Partie + Token |
 | Token | <-- | Renvoie un Token |
 | ... | ... | ... |										
-| GetPoint(Token) | --> | Récupère le point i|
+| /api/parties/point + Token | --> | Récupère le point i|
 | Appellation i | <-- | Renvoie l'appellation du point |
-| PostPoint(token, lat, lng) | --> | Récupère et vérifie les coordonnées(lat, lng) |
+| /api/parties/points + Token| --> | Récupère et vérifie les coordonnées(lat, lng) |
 | Indice | <-- | Renvoie l'indice de la destination, null si incorrecte  |
 | ... | ... | ... |
-| PostDestination(lat, lng) | --> | Récupère et vérifie les coordonnées de la destination |
+| /api/parties/destination | --> | Récupère et vérifie les coordonnées de la destination |
 | Score | <-- | Renvoie un score |
 
 <br/> i : indice d'itération
