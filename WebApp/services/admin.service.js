@@ -5,8 +5,8 @@
         .module('app')
         .factory('AdminService', AdminService);
 
-    AdminService.$inject = ['$http', '$rootScope'];
-    function AdminService($http, $rootScope) {
+    AdminService.$inject = ['$http', '$rootScope','API_END_POINT'];
+    function AdminService($http, $rootScope,API_END_POINT) {
         var service = {};
 
         //Get
@@ -20,21 +20,21 @@
         return service;
 
         function GetAllPoint() {
-          return $http.get('http://127.0.0.1:8080/findYourWay/api/privee/points').then(handleSuccess, handleError('Error getting all Points'));
+
+          return $http.get( API_END_POINT + '/privee/points').then(handleSuccess, handleError('Error getting all users'));
         }
 
         function GetAllDestination() {
-          return $http.get('http://127.0.0.1:8080/findYourWay/api/privee/destinations').then(handleSuccess, handleError('Error getting all Destinations'));
+          return $http.get(API_END_POINT + '/privee/destinations').then(handleSuccess, handleError('Error getting all users'));
         }
-
         
         function CreerPoint(lati, lngt, appellations) {
-            return $http.post('http://127.0.0.1:8080/findYourWay/api/privee/points', {"lat": lati, "lng": lngt, "appellation": appellations}).then(handleSuccess, handleError('Error creating point'));
+            return $http.post(API_END_POINT + '/privee/points', {"lat": lati, "lng": lngt, "appellation": appellations}).then(handleSuccess, handleError('Error creating point'));
         }
 
         //indices is a array of indices
         function CreerDestination(lati, lngt, desci, dlieu) {
-            return $http.post('http://127.0.0.1:8080/findYourWay/api/privee/destinations', {"lat": lati, "lng": lngt, "description": desci, "lieu": dlieu}).then(handleSuccess, handleError('Error creating destination'));
+            return $http.post(API_END_POINT + '/destinations', {"lat": lati, "lng": lngt, "description": desci, "lieu": dlieu}).then(handleSuccess, handleError('Error creating destination'));
         }
 
 
